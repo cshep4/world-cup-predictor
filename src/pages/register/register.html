@@ -1,16 +1,33 @@
+<ion-header>
+  <ion-navbar color="russia-red">
+    <ion-title>Register</ion-title>
+  </ion-navbar>
+</ion-header>
+
 <ion-content padding>
-  <h2>Register Here</h2>
   <form (submit)="doSignup()">
     <ion-item>
-      <ion-label stacked>Username</ion-label>
-      <ion-input [(ngModel)]="regData.username" name="username" type="text" placeholder="Your username" ></ion-input>
+      <ion-label stacked>First Name</ion-label>
+      <ion-input [(ngModel)]="regData.firstName" name="firstName" type="text" placeholder="Your first name" ></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Surname</ion-label>
+      <ion-input [(ngModel)]="regData.surname" name="surname" type="text" placeholder="Your surname" ></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Email</ion-label>
+      <ion-input [(ngModel)]="regData.email" name="email" type="text" placeholder="Your email" ></ion-input>
     </ion-item>
     <ion-item>
       <ion-label stacked>Password</ion-label>
       <ion-input [(ngModel)]="regData.password" name="password" type="password" placeholder="Your password"></ion-input>
     </ion-item>
+    <ion-item>
+      <ion-label stacked>Confirm Password</ion-label>
+      <ion-input [(ngModel)]="regData.confirmPassword" name="confirmPassword" type="password" placeholder="Confirm password"></ion-input>
+    </ion-item>
     <button ion-button block type="submit">
-      SignUp
+      Register
     </button>
   </form>
 </ion-content>

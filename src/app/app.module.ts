@@ -1,37 +1,53 @@
-import { NgModule, ErrorHandler } from '@angular/core';
-import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
-import { MyApp } from './app.component';
-import { AboutPage } from '../pages/about/about';
-import { ContactPage } from '../pages/contact/contact';
-import { HomePage } from '../pages/home/home';
-import { TabsPage } from '../pages/tabs/tabs';
-import { LoginPage } from '../pages/login/login';
-import { RegisterPage } from '../pages/register/register';
-import { AuthService } from '../providers/auth-service';
+import {ErrorHandler, NgModule} from '@angular/core';
+import {IonicApp, IonicErrorHandler, IonicModule} from 'ionic-angular';
+import {MyApp} from './app.component';
+import {ContactPage} from '../pages/contact/contact';
+import {HomePage} from '../pages/home/home';
+import {PredictorPage} from '../pages/predictor/predictor';
+import {TabsPage} from '../pages/tabs/tabs';
+import {LoginPage} from '../pages/login/login';
+import {RegisterPage} from '../pages/register/register';
+import {GroupPopoverPage} from '../pages/group-popover/group-popover';
+import {AuthService} from '../providers/auth-service';
+import {BrowserModule} from '@angular/platform-browser';
+import {HttpClientModule} from '@angular/common/http';
+import {StandingsPage} from "../pages/standings/standings";
+import {AccountPage} from "../pages/account/account";
+import {MatchService} from "../providers/match-service";
+import {GroupFilter} from "../pipes/group-filter";
 
 @NgModule({
   declarations: [
     MyApp,
-    AboutPage,
-    ContactPage,
     HomePage,
+    PredictorPage,
+    StandingsPage,
+    AccountPage,
+    ContactPage,
     TabsPage,
     LoginPage,
-    RegisterPage
+    RegisterPage,
+    GroupPopoverPage,
+    GroupFilter
   ],
   imports: [
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    BrowserModule,
+    HttpClientModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    AboutPage,
-    ContactPage,
     HomePage,
+    ContactPage,
+    PredictorPage,
+    StandingsPage,
+    AccountPage,
     TabsPage,
     LoginPage,
-    RegisterPage
+    RegisterPage,
+    GroupPopoverPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, AuthService]
+  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, AuthService, MatchService]
 })
 export class AppModule {}

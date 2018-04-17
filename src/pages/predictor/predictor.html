@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar color="russia-red">
+    <ion-buttons start>
+      <button ion-button (click)="presentPopover($event)">
+        Group
+      </button>
+    </ion-buttons>
+    <ion-title>Predictor</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only color="royal">
+        <ion-icon name="cloud-done"></ion-icon>
+      </button>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-card *ngFor="let item of matches | matchfilter:filterargs">
+    <ion-card-content class="center">
+      {{item.dateTime | date : "EEE, d MMMM yyyy, ha" }} - Group {{item.group}}
+    </ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col col-4 class="home-team">{{item.hteam}}</ion-col>
+          <ion-col col-1 class="center score-input"><input type="number"></ion-col>
+          <ion-col col-2 class="center">Vs.</ion-col>
+          <ion-col col-1 class="center score-input"><input type="number"></ion-col>
+          <ion-col col-4 class="away-team">{{item.ateam}}</ion-col>
+        </ion-row>
+      </ion-grid>
+  </ion-card>
+</ion-content>

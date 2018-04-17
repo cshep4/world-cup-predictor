@@ -1,0 +1,19 @@
+page-predictor {
+  .center {
+    text-align: center;
+  }
+
+  .home-team {
+    color: color($colors, russia-red);
+    text-align: left;
+  }
+
+  .away-team {
+    color: color($colors, russia-red);
+    text-align: right;
+  }
+
+  .score-input {
+    max-width: 100%;
+  }
+}
