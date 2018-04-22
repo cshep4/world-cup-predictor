@@ -2,13 +2,7 @@ import {Injectable} from '@angular/core';
 import 'rxjs/add/operator/map';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import UserUtils from "../utils/user-utils";
-
-const apiUrl = 'http://localhost:8080/';
-
-interface RequestOptions {
-  headers?: HttpHeaders | { [header: string]: string | Array<string> };
-  observe?: any;
-}
+import {apiUrl, RequestOptions} from "../utils/utils";
 
 @Injectable()
 export class AuthService {
@@ -52,14 +46,28 @@ export class AuthService {
             const headers = new HttpHeaders().set('X-Auth-Token', localStorage.getItem('token'));
             const options: RequestOptions = { headers: headers, observe: "response" };
 
+            localStorage.clear();
             this.http.post(apiUrl+'users/logout', {}, options)
               .subscribe(res => {
-                  localStorage.clear();
                   resolve(res);
               }, (err) => {
                   reject(err);
               });
       });
+  }
+
+  setUsedToken(token) {
+    return new Promise((resolve, reject) => {
+      const body = token;
+      const options: RequestOptions = { observe: "response" };
+
+      this.http.put(apiUrl+'token/used', body, options)
+        .subscribe(res => {
+          resolve(res);
+        }, (err) => {
+          reject(err);
+        });
+    });
   }
 
 }

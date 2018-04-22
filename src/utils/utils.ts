@@ -1,3 +1,5 @@
+import {HttpHeaders} from "@angular/common/http";
+
 export default class Utils {
   static showLoader(message, loadingCtrl) {
     let loading = loadingCtrl.create({
@@ -23,4 +25,11 @@ export default class Utils {
 
     toast.present();
   }
+}
+
+export const apiUrl = 'https://wcpredictor.herokuapp.com/';
+
+export interface RequestOptions {
+  headers?: HttpHeaders | { [header: string]: string | Array<string> };
+  observe?: any;
 }

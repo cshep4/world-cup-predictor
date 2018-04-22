@@ -4,7 +4,7 @@ import {HomePage} from '../home/home';
 import {PredictorPage} from '../predictor/predictor';
 import {ContactPage} from '../contact/contact';
 import {LoginPage} from '../login/login';
-import {StandingsPage} from "../standings/standings";
+import {TournamentPage} from "../tournament/tournament";
 import {AccountPage} from "../account/account";
 
 @Component({
@@ -15,7 +15,7 @@ export class TabsPage {
   // should be each tab's root Page
   tab1Root: any = HomePage;
   tab2Root: any = PredictorPage;
-  tab3Root: any = StandingsPage;
+  tab3Root: any = TournamentPage;
   tab4Root: any = ContactPage;
   tab5Root: any = AccountPage;
 

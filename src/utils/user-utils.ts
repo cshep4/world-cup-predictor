@@ -21,6 +21,6 @@ export default class UserUtils {
           return false
       }
 
-      return false;
+      return true;
   }
 }

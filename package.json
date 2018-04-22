@@ -1,50 +1,71 @@
 {
-  "name": "world-cup-predictor-fe",
-  "author": "Chris Shepherd",
-  "private": true,
-  "scripts": {
-    "clean": "ionic-app-scripts clean",
-    "build": "ionic-app-scripts build",
-    "ionic:build": "ionic-app-scripts build",
-    "ionic:serve": "ionic-app-scripts serve"
-  },
-  "dependencies": {
-    "@angular/common": "5.2.9",
-    "@angular/compiler": "5.2.9",
-    "@angular/compiler-cli": "5.2.9",
-    "@angular/core": "5.2.9",
-    "@angular/forms": "5.2.9",
-    "@angular/http": "5.2.9",
-    "@angular/platform-browser": "5.2.9",
-    "@angular/platform-browser-dynamic": "5.2.9",
-    "@angular/platform-server": "5.2.9",
-    "@ionic/storage": "2.1.3",
-    "ionic-angular": "3.9.2",
-    "ionic-native": "2.9.0",
-    "ionicons": "3.0.0",
-    "rxjs": "5.5.9",
-    "sw-toolbox": "3.6.0",
-    "zone.js": "0.8.26"
-  },
-  "devDependencies": {
-    "@ionic/app-scripts": "3.1.8",
-    "typescript": "2.8.1"
-  },
-  "cordovaPlugins": [
-    "ionic-plugin-keyboard",
-    "cordova-plugin-whitelist",
-    "cordova-plugin-statusbar",
-    "cordova-plugin-device",
-    "cordova-plugin-console",
-    "cordova-plugin-splashscreen"
-  ],
-  "cordovaPlatforms": [
-    "ios",
-    {
-      "platform": "ios",
-      "version": "",
-      "locator": "ios"
+    "name": "world-cup-predictor-fe",
+    "author": "Chris Shepherd",
+    "private": true,
+    "scripts": {
+        "clean": "ionic-app-scripts clean",
+        "build": "ionic-app-scripts build",
+        "ionic:build": "ionic-app-scripts build",
+        "ionic:serve": "ionic-app-scripts serve"
+    },
+    "dependencies": {
+        "@angular/common": "5.2.9",
+        "@angular/compiler": "5.2.9",
+        "@angular/compiler-cli": "5.2.9",
+        "@angular/core": "5.2.9",
+        "@angular/forms": "5.2.9",
+        "@angular/http": "5.2.9",
+        "@angular/platform-browser": "5.2.9",
+        "@angular/platform-browser-dynamic": "5.2.9",
+        "@angular/platform-server": "5.2.9",
+        "@ionic/storage": "2.1.3",
+        "angular2-number-picker": "^0.8.8",
+        "cordova-ios": "^4.4.0",
+        "cordova-plugin-console": "^1.0.5",
+        "cordova-plugin-device": "^1.1.4",
+        "cordova-plugin-splashscreen": "^4.0.3",
+        "cordova-plugin-statusbar": "git+https://github.com/apache/cordova-plugin-statusbar.git",
+        "cordova-plugin-whitelist": "^1.3.1",
+        "ionic-angular": "^3.9.2",
+        "ionic-native": "2.9.0",
+        "ionic-plugin-keyboard": "^2.2.1",
+        "ionicons": "3.0.0",
+        "rxjs": "5.5.9",
+        "sw-toolbox": "3.6.0",
+        "zone.js": "0.8.26"
+    },
+    "devDependencies": {
+        "@ionic/app-scripts": "3.1.8",
+        "typescript": "2.8.1"
+    },
+    "cordovaPlugins": [
+        "ionic-plugin-keyboard",
+        "cordova-plugin-whitelist",
+        "cordova-plugin-statusbar",
+        "cordova-plugin-device",
+        "cordova-plugin-console",
+        "cordova-plugin-splashscreen"
+    ],
+    "cordovaPlatforms": [
+        "ios",
+        {
+            "platform": "ios",
+            "version": "",
+            "locator": "ios"
+        }
+    ],
+    "description": "World Cup 2018 Predictor App",
+    "cordova": {
+        "plugins": {
+            "cordova-plugin-console": {},
+            "cordova-plugin-device": {},
+            "cordova-plugin-splashscreen": {},
+            "cordova-plugin-whitelist": {},
+            "ionic-plugin-keyboard": {},
+            "cordova-plugin-statusbar": {}
+        },
+        "platforms": [
+            "ios"
+        ]
     }
-  ],
-  "description": "World Cup 2018 Predictor App"
 }

@@ -1,6 +1,33 @@
 page-home {
+  .title-font {
+    font-family: dusha-regular;
+    font-size: 7vw;
+  }
 
+  .subtitle {
+    font-size: 5vw;
+  }
+
+  .subtitle-font {
+    margin: 0;
+    font-family: OpenSans-Bold-complete;
+  }
+
+  .grid {
+    padding: 0;
+  }
+
+
+  .text {
+    font-size: 3vw;
+  }
+
+  left-col {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
 }
+
 ion-grid {
   ion-row {
     height: 33.33%;

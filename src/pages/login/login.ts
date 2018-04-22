@@ -21,9 +21,13 @@ export class LoginPage {
       this.loading = Utils.showLoader('Logging in...', this.loadingCtrl);
       this.authService.login(this.loginData).then((result) => {
           this.loading.dismiss();
+
           this.data = result;
-          let token = this.data.headers.get('X-Auth-Token');
+          const token = this.data.headers.get('X-Auth-Token');
           localStorage.setItem('token', token);
+          const userId = this.data.headers.get('userId');
+          localStorage.setItem('userId', userId);
+
           this.navCtrl.setRoot(TabsPage);
       }, (err) => {
           this.loading.dismiss();

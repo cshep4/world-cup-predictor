@@ -21,6 +21,7 @@ export class RegisterPage {
 
     doSignup() {
         this.loading = Utils.showLoader('Registering...', this.loadingCtrl);
+
         this.authService.register(this.regData).then((result) => {
             const loginData = {
                 email: this.regData.email,

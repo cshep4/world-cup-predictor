@@ -2,13 +2,14 @@
   <ion-toolbar color="russia-red">
     <ion-buttons start>
       <button ion-button (click)="presentPopover($event)">
-        Group
+        <ion-label>Phase</ion-label>
+        <ion-icon name="arrow-down"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-title>Predictor</ion-title>
+    <ion-title>{{this.phase}}</ion-title>
     <ion-buttons end>
-      <button ion-button icon-only color="royal">
-        <ion-icon name="cloud-done"></ion-icon>
+      <button ion-button icon-only color="royal" (click)="save()">
+        <ion-icon name="checkmark"></ion-icon>
       </button>
     </ion-buttons>
 
@@ -17,16 +18,28 @@
 
 <ion-content padding>
   <ion-card *ngFor="let item of matches | matchfilter:filterargs">
-    <ion-card-content class="center">
-      {{item.dateTime | date : "EEE, d MMMM yyyy, ha" }} - Group {{item.group}}
-    </ion-card-content>
       <ion-grid>
-        <ion-row>
-          <ion-col col-4 class="home-team">{{item.hteam}}</ion-col>
-          <ion-col col-1 class="center score-input"><input type="number"></ion-col>
-          <ion-col col-2 class="center">Vs.</ion-col>
-          <ion-col col-1 class="center score-input"><input type="number"></ion-col>
-          <ion-col col-4 class="away-team">{{item.ateam}}</ion-col>
+        <ion-row text-center>
+          <ion-col class="h-center" col-12>
+            {{item.dateTime | date : "EEE, d MMMM yyyy, ha" }}
+          </ion-col>
+        </ion-row>
+        <ion-row  text-center class="v-center">
+          <ion-col col-3 class="h-center home-team">
+            {{ item.hTeam  || "TBC" }}
+          </ion-col>
+          <ion-col col-2 class="h-center score-input">
+            <input [disabled]="hasDatePassed(item.dateTime)" class="h-center" type="number" min="0" max="99" name="hg{{item.id}}" [(ngModel)]="item.hGoals">
+          </ion-col>
+          <ion-col col-2 class="h-center">
+            Vs.
+          </ion-col>
+          <ion-col class="h-center" col-2 class="h-center score-input">
+            <input [disabled]="hasDatePassed(item.dateTime)" class="h-center" type="number" min="0" max="99" name="ag{{item.id}}" [(ngModel)]="item.aGoals">
+          </ion-col>
+          <ion-col col-3 class="h-center away-team">
+            {{ item.aTeam  || "TBC" }}
+          </ion-col>
         </ion-row>
       </ion-grid>
   </ion-card>

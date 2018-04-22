@@ -9,4 +9,12 @@ export default class MatchUtils {
 
     return newDate;
   }
+
+  static compareDate(a, b) {
+    if (a.dateTime < b.dateTime)
+      return -1;
+    if (a.dateTime > b.dateTime)
+      return 1;
+    return 0;
+  }
 }

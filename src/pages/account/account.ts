@@ -23,11 +23,10 @@ export class AccountPage {
     this.loading = Utils.showLoader('Logging out...', this.loadingCtrl);
     this.authService.logout().then((result) => {
       this.loading.dismiss();
-      let nav = this.app.getRootNav();
-      nav.setRoot(LoginPage);
     }, (err) => {
       this.loading.dismiss();
-      Utils.presentToast(err, this.toastCtrl);
     });
+    let nav = this.app.getRootNav();
+    nav.setRoot(LoginPage);
   }
 }

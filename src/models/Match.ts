@@ -1,5 +1,6 @@
 export class Match {
   id : number;
+  predictionId: number;
   played : number;
   group : string;
   dateTime : Date;

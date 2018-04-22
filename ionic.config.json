@@ -1,6 +1,8 @@
 {
   "name": "World Cup 2018 Predictor",
   "app_id": "",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "ionic-angular"
 }

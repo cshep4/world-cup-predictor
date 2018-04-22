@@ -11,17 +11,18 @@ import {GroupPopoverPage} from '../pages/group-popover/group-popover';
 import {AuthService} from '../providers/auth-service';
 import {BrowserModule} from '@angular/platform-browser';
 import {HttpClientModule} from '@angular/common/http';
-import {StandingsPage} from "../pages/standings/standings";
+import {TournamentPage} from "../pages/tournament/tournament";
 import {AccountPage} from "../pages/account/account";
 import {MatchService} from "../providers/match-service";
 import {GroupFilter} from "../pipes/group-filter";
+import {TournamentService} from "../providers/tournament-service";
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
     PredictorPage,
-    StandingsPage,
+    TournamentPage,
     AccountPage,
     ContactPage,
     TabsPage,
@@ -41,13 +42,13 @@ import {GroupFilter} from "../pipes/group-filter";
     HomePage,
     ContactPage,
     PredictorPage,
-    StandingsPage,
+    TournamentPage,
     AccountPage,
     TabsPage,
     LoginPage,
     RegisterPage,
     GroupPopoverPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, AuthService, MatchService]
+  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, AuthService, MatchService, TournamentService]
 })
 export class AppModule {}

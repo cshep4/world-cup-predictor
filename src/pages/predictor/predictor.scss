@@ -1,16 +1,23 @@
 page-predictor {
-  .center {
+  .v-center {
+    display: flex;
+    align-content: center;
+    align-items: center;
+  }
+
+  .h-center {
     text-align: center;
+    font-size: 3vw;
   }
 
   .home-team {
     color: color($colors, russia-red);
-    text-align: left;
+    font-size: 3vw;
   }
 
   .away-team {
     color: color($colors, russia-red);
-    text-align: right;
+    font-size: 3vw;
   }
 
   .score-input {
