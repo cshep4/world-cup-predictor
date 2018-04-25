@@ -1,0 +1,123 @@
+<ion-list class="accordion-list">
+  <!-- First Level -->
+  <ion-list-header *ngFor="let item of tables; let i = index" no-lines no-padding>
+    <!-- Toggle Button -->
+    <button ion-item (click)="toggleSection(i)" detail-none [ngClass]="{'section-active': item.open, 'section': !item.open}">
+      <ion-icon item-left name="arrow-forward" *ngIf="!item.open"></ion-icon>
+      <ion-icon item-left name="arrow-down" *ngIf="item.open"></ion-icon>
+      {{ item.name }}
+    </button>
+
+    <ion-list *ngIf="item.standings && item.open" no-lines>
+      <!-- Second Level -->
+      <ion-list-header *ngFor="let child of item.standings; let j = index" no-padding>
+        <!-- GROUP - START -->
+        <button ion-item (click)="toggleItem(i, j)" *ngIf="child.table" class="child" detail-none>
+          <ion-icon item-left name="add" *ngIf="!child.open"></ion-icon>
+          <ion-icon item-left name="close" *ngIf="child.open"></ion-icon>
+          Group {{ child.group }}
+        </button>
+
+        <ion-list *ngIf="child.table && child.open">
+          <!-- Table headers -->
+          <ion-row class="child-item">
+            <ion-col class="center-text" col-1></ion-col>
+            <ion-col class="center-text" col-4>
+              <strong>Team</strong>
+            </ion-col>
+            <ion-col class="center-text" col-1>
+              <strong>P</strong>
+            </ion-col>
+            <ion-col class="center-text" col-1>
+              <strong>W</strong>
+            </ion-col>
+            <ion-col class="center-text" col-1>
+              <strong>D</strong>
+            </ion-col>
+            <ion-col class="center-text" col-1>
+              <strong>L</strong>
+            </ion-col>
+            <ion-col class="center-text" col-1>
+              <strong>GD</strong>
+            </ion-col>
+            <ion-col class="center-text" col-2>
+              <strong>Pts</strong>
+            </ion-col>
+          </ion-row>
+
+
+          <!-- Table data -->
+          <ion-row *ngFor="let item of child.table; let k = index" detail-none class="child-item" [ngStyle]="{'border-bottom': k === 1 ? '1px dashed #888888' : 'no border'}" text-wrap>
+            <ion-col class="center-text" col-1>
+              {{ item.rank }}
+            </ion-col>
+            <ion-col class="center-text" col-4>
+              {{ item.teamName }}
+            </ion-col>
+            <ion-col class="center-text" col-1>
+              {{ item.played }}
+            </ion-col>
+            <ion-col class="center-text" col-1>
+              {{ item.wins }}
+            </ion-col>
+            <ion-col class="center-text" col-1>
+              {{ item.draws }}
+            </ion-col>
+            <ion-col class="center-text" col-1>
+              {{ item.losses }}
+            </ion-col>
+            <ion-col class="center-text" col-1>
+              {{ item.goalDifference }}
+            </ion-col>
+            <ion-col class="center-text" col-2>
+              {{ item.points }}
+            </ion-col>
+
+          </ion-row>
+        </ion-list>
+
+        <!-- GROUP - END -->
+
+        <!-- KNOCKOUT - START -->
+        <button ion-item (click)="toggleItem(i, j)" *ngIf="child.matches" class="child" detail-none>
+          <ion-icon item-left name="add" *ngIf="!child.open"></ion-icon>
+          <ion-icon item-left name="close" *ngIf="child.open"></ion-icon>
+          {{ child.round }}
+        </button>
+
+        <ion-list *ngIf="child.matches && child.open">
+          <ion-card *ngFor="let item of child.matches">
+            <ion-grid>
+              <ion-row text-center>
+                <ion-col class="h-center" col-12>
+                  {{item.dateTime | date : "EEE, d MMMM yyyy, ha" }}
+                </ion-col>
+              </ion-row>
+              <ion-row  text-center class="v-center">
+                <ion-col col-3 class="h-center home-team">
+                  {{ item.hteam  || "TBC" }}
+                </ion-col>
+                <ion-col col-2 class="h-center">
+                  {{ item.hgoals  || "" }}
+                </ion-col>
+                <ion-col col-2 class="h-center">
+                  Vs.
+                </ion-col>
+                <ion-col class="h-center" col-2>
+                  {{ item.agoals  || "" }}
+                </ion-col>
+                <ion-col col-3 class="h-center away-team">
+                  {{ item.ateam  || "TBC" }}
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-card>
+        </ion-list>
+
+        <!-- KNOCKOUT - END -->
+
+      </ion-list-header>
+    </ion-list>
+
+  </ion-list-header>
+</ion-list>

@@ -1,12 +1,14 @@
 import {Component} from '@angular/core';
 
-import {LoadingController, NavController, PopoverController, ToastController} from 'ionic-angular';
+import {LoadingController, NavController, Platform, PopoverController, ToastController} from 'ionic-angular';
 import {MatchService} from "../../providers/match-service";
 import MatchUtils from "../../utils/match-utils";
 import Utils from "../../utils/utils";
-import {GroupPopoverPage} from "../group-popover/group-popover";
+import {GroupPopover} from "../../components/group-popover/group-popover";
 import {Prediction} from "../../models/Prediction";
 import {Match} from "../../models/Match";
+import {TournamentService} from "../../providers/tournament-service";
+import {AdMobFree} from "@ionic-native/admob-free";
 
 @Component({
   selector: 'page-predictor',
@@ -24,9 +26,13 @@ export class PredictorPage {
               public matchService: MatchService,
               public loadingCtrl: LoadingController,
               private toastCtrl: ToastController,
-              public popoverCtrl: PopoverController) {}
+              public popoverCtrl: PopoverController,
+              public tournamentService: TournamentService,
+              public admob: AdMobFree,
+              public plt: Platform) {}
 
   ionViewDidEnter() {
+    Utils.showBanner(this.plt, this.admob);
     if (!this.matches) {
       this.loadMatchesWithPredictions();
     }
@@ -69,7 +75,7 @@ export class PredictorPage {
   }
 
   presentPopover(myEvent) {
-    let popover = this.popoverCtrl.create(GroupPopoverPage);
+    let popover = this.popoverCtrl.create(GroupPopover);
     popover.present({
         ev: myEvent
     });
@@ -83,6 +89,7 @@ export class PredictorPage {
   }
 
   save() {
+      this.loading = Utils.showLoader('Saving Predictions...', this.loadingCtrl);
       const userId = localStorage.getItem("userId");
 
       this.predictions = this.matches
@@ -101,6 +108,7 @@ export class PredictorPage {
       this.matchService.savePredictions(token, this.predictions).then((result) => {
           this.loading.dismiss();
           Utils.presentToast("Predictions stored successfully!", this.toastCtrl);
+          MatchUtils.refreshData = true;
 
           this.data = result;
           const token = this.data.headers.get('X-Auth-Token');

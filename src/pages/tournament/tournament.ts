@@ -1,8 +1,10 @@
 import {Component} from '@angular/core';
 
-import {LoadingController, NavController, ToastController} from 'ionic-angular';
+import {LoadingController, NavController, Platform, ToastController} from 'ionic-angular';
 import Utils from "../../utils/utils";
 import {TournamentService} from "../../providers/tournament-service";
+import MatchUtils from "../../utils/match-utils";
+import {AdMobFree} from "@ionic-native/admob-free";
 
 @Component({
   selector: 'page-tournament',
@@ -18,21 +20,35 @@ export class TournamentPage {
   constructor(public navCtrl: NavController,
               public tournamentService: TournamentService,
               public loadingCtrl: LoadingController,
-              private toastCtrl: ToastController) {
+              private toastCtrl: ToastController,
+              public admob: AdMobFree,
+              public plt: Platform) {
     this.standingsType = "current";
+
+    let standings = [{
+      name: "Group Stage",
+      standings: null
+    }, {
+      name: "Knockout Stage",
+      standings: null
+    }];
+
+    this.currentTables = JSON.parse(JSON.stringify(standings));
+    this.predictedTables = JSON.parse(JSON.stringify(standings));
   }
 
   ionViewDidEnter() {
+    Utils.showBanner(this.plt, this.admob);
     this.getStandings();
   }
 
   getStandings() {
     if (this.standingsType == "current") {
-      if (!this.currentTables) {
+      if (!this.currentTables[0].standings) {
         this.getCurrentLeagueTable();
       }
     } else {
-      if (!this.predictedTables) {
+      if (!this.predictedTables[0].standings || MatchUtils.refreshData) {
         this.getPredictedLeagueTable();
       }
     }
@@ -45,10 +61,13 @@ export class TournamentPage {
     this.tournamentService.retrieveCurrentLeagueTable(token).then((result) => {
       this.loading.dismiss();
       this.data = result;
-      this.currentTables = this.data.body.standings;
+
+      this.currentTables[0].standings = this.data.body.standings;
+      this.currentTables[1].standings = this.data.body.knockoutStandings;
+      this.currentTables[1].standings.forEach(m => this.convertDateToLocalTime(m));
+
       let token = this.data.headers.get('X-Auth-Token');
       localStorage.setItem('token', token);
-      console.log(this.currentTables);
     }, (err) => {
       this.loading.dismiss();
       Utils.presentToast("Error loading standings", this.toastCtrl);
@@ -63,102 +82,24 @@ export class TournamentPage {
     this.tournamentService.retrievePredictedLeagueTable(token, userId).then((result) => {
       this.loading.dismiss();
       this.data = result;
-      this.predictedTables = this.data.body.standings;
+
+      this.predictedTables[0].standings = this.data.body.standings;
+      this.predictedTables[1].standings = this.data.body.knockoutStandings;
+      this.currentTables[1].standings.forEach(m => this.convertDateToLocalTime(m));
+      MatchUtils.refreshData = false;
+
       let token = this.data.headers.get('X-Auth-Token');
       localStorage.setItem('token', token);
-      console.log(this.predictedTables);
     }, (err) => {
       this.loading.dismiss();
       Utils.presentToast("Error loading standings", this.toastCtrl);
     });
   }
 
-  toggleSection(i) {
-    this.currentTables[i].open = !this.currentTables[i].open;
+  convertDateToLocalTime(round) {
+    for(let i=0; i<round.matches.length; i++){
+      const originalDate = round.matches[i].dateTime;
+      round.matches[i].dateTime = MatchUtils.convertUTCDateToLocalDate(new Date(originalDate));
+    }
   }
-
-  toggleItem(i, j) {
-    this.currentTables[i].children[j].open = !this.currentTables[i].children[j].open;
-  }
-
 }
-
-
-
-// this.information =[
-//   {
-//     "name": "Group",
-//     "children": [
-//       {
-//         "name": "Traditional",
-//         "children": [
-//           {
-//             "name": "Pizza Salami",
-//             "information": "Pork chop jowl capicola porchetta, kielbasa prosciutto boudin bacon pork pig.",
-//             "price": "$10"
-//           },
-//           {
-//             "name": "Pizza Prosciutto",
-//             "information": "Pork chop pastrami landjaeger chuck brisket",
-//             "price": "$12"
-//           }
-//         ]
-//       },
-//       {
-//         "name": "Gourmet",
-//         "children": [
-//           {
-//             "name": "Pizza Bombay",
-//             "information": "Pastrami ham hock ball tip, tongue ribeye chuck ham beef bresaola leberkas.",
-//             "price": "$13"
-//           },
-//           {
-//             "name": "Pizza Crazy Dog",
-//             "information": "Andouille spare ribs meatloaf swine ground round pork loin, brisket chuck bacon tongue.",
-//             "price": "$14"
-//           },
-//           {
-//             "name": "Pizza Italia",
-//             "information": "Ribeye ham §-bone, tail ground round biltong picanha sausage rump corned beef.",
-//             "price": "$11"
-//           },
-//           {
-//             "name": "Pizza Tuna",
-//             "information": "Pork chop pastrami landjaeger chuck brisket",
-//             "price": "$14"
-//           }
-//         ]
-//       },
-//       {
-//         "name": "Bestseller",
-//         "children": [
-//           {
-//             "name": "Pizza Academy",
-//             "information": "Frankfurter tail capicola cupim shankle salami, beef ribs beef boudin porchetta ball tip leberkas turkey tenderloin.",
-//             "price": "$25"
-//           },
-//           {
-//             "name": "Pizza Ionic",
-//             "information": "Shank chuck tail, kevin shankle ham hock pork loin pork hamburger beef ribs.",
-//             "price": "$19.99"
-//           }
-//         ]
-//       }
-//     ]
-//   },
-//   {
-//     "name": "Knockout",
-//     "children": [
-//       {
-//         "name": "Special Academy Pizza",
-//         "information": " Landjaeger fatback shank frankfurter, tongue shoulder ham strip steak pancetta pork short loin corned beef short ribs biltong cow",
-//         "price": "$25"
-//       },
-//       {
-//         "name": "Pizza Ionic",
-//         "information": "Pork chop pastrami landjaeger chuck brisket",
-//         "price": "$19.99"
-//       }
-//     ]
-//   }
-// ];

@@ -17,7 +17,6 @@ export class MatchService {
       const options: RequestOptions = { headers: headers, observe: "response" };
 
       const url = apiUrl + 'fixtures/predicted/' + id;
-      console.log(url);
 
       this.http.get(url, options).subscribe(res => {
           this.authService.setUsedToken(token).then((result) => {}, (err) => {});

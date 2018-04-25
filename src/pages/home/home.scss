@@ -33,3 +33,7 @@ ion-grid {
     height: 33.33%;
   }
 }
+
+ion-spinner svg * {
+  stroke: white !important;
+}

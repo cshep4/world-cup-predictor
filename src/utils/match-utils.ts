@@ -1,4 +1,6 @@
 export default class MatchUtils {
+  static refreshData = false;
+
   static convertUTCDateToLocalDate(date) {
     let newDate = new Date(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
 

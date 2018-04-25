@@ -1,13 +1,16 @@
 <ion-header>
   <ion-toolbar color="russia-red">
     <ion-buttons left>
-      <button ion-button>
-        Pts: 1
+
+      <button *ngIf="scoreRetrievable" ion-button [disabled]="!rank" (click)="goToStandingsPage()">
+        {{ rank || "" }}
+        <ion-spinner *ngIf="!rank"></ion-spinner>
       </button>
     </ion-buttons>
     <ion-buttons right>
-      <button ion-button>
-        Rank: 100
+      <button *ngIf="scoreRetrievable" ion-button [disabled]="!score" (click)="goToStandingsPage()">
+        {{ score || "" }}
+        <ion-spinner *ngIf="!score"></ion-spinner>
       </button>
     </ion-buttons>
   </ion-toolbar>

@@ -1,8 +1,9 @@
 import {Component} from '@angular/core';
-import {LoadingController, NavController, NavParams, ToastController} from 'ionic-angular';
+import {LoadingController, NavController, NavParams, Platform, ToastController} from 'ionic-angular';
 import {AuthService} from '../../providers/auth-service';
 import {TabsPage} from "../tabs/tabs";
 import Utils from "../../utils/utils";
+import {AdMobFree} from "@ionic-native/admob-free";
 
 @Component({
     selector: 'page-register',
@@ -10,14 +11,20 @@ import Utils from "../../utils/utils";
 })
 export class RegisterPage {
     loading: any;
-    regData = { firstName: '', surname: '', email:'', password:'', confirmPassword: '',  };
+    regData = { firstName: '', surname: '', email:'', password:'', confirmPassword: '', predictedWinner: '' };
     data: any;
 
     constructor(public navCtrl: NavController,
                 public navParams: NavParams,
                 public authService: AuthService,
                 public loadingCtrl: LoadingController,
-                private toastCtrl: ToastController) {}
+                private toastCtrl: ToastController,
+                public admob: AdMobFree,
+                public plt: Platform) {}
+
+    ionViewDidEnter() {
+      Utils.showBanner(this.plt, this.admob);
+    }
 
     doSignup() {
         this.loading = Utils.showLoader('Registering...', this.loadingCtrl);
@@ -33,6 +40,8 @@ export class RegisterPage {
 
                 this.data = result;
                 localStorage.setItem('token', this.data.headers.get('X-Auth-Token'));
+                const userId = this.data.headers.get('userId');
+                localStorage.setItem('userId', userId);
 
                 this.navCtrl.setRoot(TabsPage);
                 this.navCtrl.popToRoot();

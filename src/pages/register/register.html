@@ -26,6 +26,43 @@
       <ion-label stacked>Confirm Password</ion-label>
       <ion-input [(ngModel)]="regData.confirmPassword" name="confirmPassword" type="password" placeholder="Confirm password"></ion-input>
     </ion-item>
+    <ion-item>
+      <ion-label>Predicted Winner</ion-label>
+      <ion-select name="predictedWinner" [(ngModel)]="regData.predictedWinner">
+        <ion-option value="Russia">Russia</ion-option>
+        <ion-option value="Saudi Arabia">Saudi Arabia</ion-option>
+        <ion-option value="Egypt">Egypt</ion-option>
+        <ion-option value="Uruguay">Uruguay</ion-option>
+        <ion-option value="Morocco">Morocco</ion-option>
+        <ion-option value="Iran">Iran</ion-option>
+        <ion-option value="Portugal">Portugal</ion-option>
+        <ion-option value="Spain">Spain</ion-option>
+        <ion-option value="France">France</ion-option>
+        <ion-option value="Australia">Australia</ion-option>
+        <ion-option value="Peru">Peru</ion-option>
+        <ion-option value="Denmark">Denmark</ion-option>
+        <ion-option value="Argentina">Argentina</ion-option>
+        <ion-option value="Iceland">Iceland</ion-option>
+        <ion-option value="Croatia">Croatia</ion-option>
+        <ion-option value="Nigeria">Nigeria</ion-option>
+        <ion-option value="Costa Rica">Costa Rica</ion-option>
+        <ion-option value="Serbia">Serbia</ion-option>
+        <ion-option value="Brazil">Brazil</ion-option>
+        <ion-option value="Switzerland">Switzerland</ion-option>
+        <ion-option value="Germany">Germany</ion-option>
+        <ion-option value="Mexico">Mexico</ion-option>
+        <ion-option value="Sweden">Sweden</ion-option>
+        <ion-option value="Korea Republic">Korea Republi</ion-option>
+        <ion-option value="Belgium">Belgium</ion-option>
+        <ion-option value="Panama">Panama</ion-option>
+        <ion-option value="Tunisia">Tunisia</ion-option>
+        <ion-option value="England">England</ion-option>
+        <ion-option value="Poland">Poland</ion-option>
+        <ion-option value="Senegal">Senegal</ion-option>
+        <ion-option value="Colombia">Colombia</ion-option>
+        <ion-option value="Japan">Japan</ion-option>
+      </ion-select>
+    </ion-item>
     <button ion-button block type="submit">
       Register
     </button>

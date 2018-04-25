@@ -5,7 +5,7 @@ import {ViewController} from "ionic-angular";
 @Component({
   templateUrl: 'group-popover.html'
 })
-export class GroupPopoverPage {
+export class GroupPopover {
   constructor(public viewCtrl: ViewController) {}
 
   close(group) {
