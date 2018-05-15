@@ -4,6 +4,7 @@ import {AuthService} from '../../providers/auth-service';
 import {TabsPage} from "../tabs/tabs";
 import Utils from "../../utils/utils";
 import {AdMobFree} from "@ionic-native/admob-free";
+import UserUtils from "../../utils/user-utils";
 
 @Component({
     selector: 'page-register',
@@ -13,6 +14,11 @@ export class RegisterPage {
     loading: any;
     regData = { firstName: '', surname: '', email:'', password:'', confirmPassword: '', predictedWinner: '' };
     data: any;
+    isPasswordBetween6And20Characters = UserUtils.isPasswordBetween6And20Characters;
+    doesPasswordContainUppercaseLetters = UserUtils.doesPasswordContainUppercaseLetters;
+    doesPasswordContainLowercaseLetters = UserUtils.doesPasswordContainLowercaseLetters;
+    doesPasswordContainNumbers = UserUtils.doesPasswordContainNumbers;
+    doPasswordsMatch = UserUtils.doPasswordsMatch;
 
     constructor(public navCtrl: NavController,
                 public navParams: NavParams,

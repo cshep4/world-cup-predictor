@@ -1,7 +1,7 @@
 import {ErrorHandler, NgModule} from '@angular/core';
 import {IonicApp, IonicErrorHandler, IonicModule} from 'ionic-angular';
 import {MyApp} from './app.component';
-import {ContactPage} from '../pages/contact/contact';
+import {StandingsPage} from '../pages/standings/standings';
 import {HomePage} from '../pages/home/home';
 import {PredictorPage} from '../pages/predictor/predictor';
 import {TabsPage} from '../pages/tabs/tabs';
@@ -19,6 +19,10 @@ import {TournamentService} from "../providers/tournament-service";
 import {StandingsAccordion} from "../components/standings-accordion/standings-accordion";
 import {AdMobFree} from "@ionic-native/admob-free";
 import {ScoreService} from "../providers/score-service";
+import {StandingsService} from "../providers/standings-service";
+import {LeaguePage} from "../pages/league/league";
+import {Clipboard} from "@ionic-native/clipboard";
+import {AccountService} from "../providers/account-service";
 
 @NgModule({
   declarations: [
@@ -27,13 +31,14 @@ import {ScoreService} from "../providers/score-service";
     PredictorPage,
     TournamentPage,
     AccountPage,
-    ContactPage,
+    StandingsPage,
     TabsPage,
     LoginPage,
     RegisterPage,
     GroupPopover,
     GroupFilter,
-    StandingsAccordion
+    StandingsAccordion,
+    LeaguePage
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -44,14 +49,15 @@ import {ScoreService} from "../providers/score-service";
   entryComponents: [
     MyApp,
     HomePage,
-    ContactPage,
+    StandingsPage,
     PredictorPage,
     TournamentPage,
     AccountPage,
     TabsPage,
     LoginPage,
     RegisterPage,
-    GroupPopover
+    GroupPopover,
+    LeaguePage
   ],
   providers: [
     {provide: ErrorHandler, useClass: IonicErrorHandler},
@@ -59,6 +65,9 @@ import {ScoreService} from "../providers/score-service";
     MatchService,
     TournamentService,
     ScoreService,
-    AdMobFree]
+    StandingsService,
+    AdMobFree,
+    AccountService,
+    Clipboard]
 })
 export class AppModule {}

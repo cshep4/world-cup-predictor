@@ -1,6 +1,6 @@
 page-home {
   .title-font {
-    font-family: dusha-regular;
+    font-family: dusha-regular, serif;
     font-size: 7vw;
   }
 
@@ -10,7 +10,7 @@ page-home {
 
   .subtitle-font {
     margin: 0;
-    font-family: OpenSans-Bold-complete;
+    font-family: dusha-regular, serif;
   }
 
   .grid {
@@ -22,9 +22,10 @@ page-home {
     font-size: 3vw;
   }
 
-  left-col {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
+  .white-spinner {
+    ion-spinner svg * {
+      stroke: white !important;
+    }
   }
 }
 
@@ -32,8 +33,4 @@ ion-grid {
   ion-row {
     height: 33.33%;
   }
-}
-
-ion-spinner svg * {
-  stroke: white !important;
 }

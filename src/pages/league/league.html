@@ -1,0 +1,70 @@
+<ion-header>
+  <ion-navbar color="russia-red">
+    <ion-title>
+      {{ leagueOverview.leagueName }}
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher (ionRefresh)="loadLeagueTable($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-list *ngIf="displayedTable">
+    <!-- Table headers -->
+    <ion-row class="child-item v-center">
+      <ion-col class="center-text" col-2></ion-col>
+      <ion-col class="center-text" col-4>
+        <strong>Player</strong>
+      </ion-col>
+      <ion-col class="center-text" col-4>
+        <strong>Predicted Winner</strong>
+      </ion-col>
+      <ion-col class="center-text" col-2>
+        <strong>Score</strong>
+      </ion-col>
+    </ion-row>
+
+
+    <!-- Table data -->
+    <ion-row *ngFor="let item of displayedTable; let k = index" detail-none class="child-item v-center" text-wrap>
+      <ion-col class="center-text" col-2 [ngStyle]="{'color': userId == item.id ? '#af3434' : 'black'}">
+        {{ k + 1 }}
+      </ion-col>
+      <ion-col class="center-text" col-4 [ngStyle]="{'color': userId == item.id ? '#af3434' : 'black'}">
+        {{ item.firstName }} {{ item.surname }}
+      </ion-col>
+      <ion-col class="center-text" col-4 [ngStyle]="{'color': userId == item.id ? '#af3434' : 'black'}">
+        {{ item.predictedWinner }}
+      </ion-col>
+      <ion-col class="center-text" col-2 [ngStyle]="{'color': userId == item.id ? '#af3434' : 'black'}">
+        {{ item.score }}
+      </ion-col>
+
+    </ion-row>
+  </ion-list>
+
+  <ion-fab bottom right>
+    <button ion-fab>
+      <ion-icon name="arrow-dropup"></ion-icon>
+    </button>
+    <ion-fab-list side="top">
+      <button ion-fab color="dark-grey" (click)="showLeaveLeaguePrompt()">
+        <ion-icon name="log-out"></ion-icon>
+        <ion-label>Leave League</ion-label>
+      </button>
+      <button ion-fab color="dark-grey" *ngIf="leagueOverview.pin" (click)="copyPin()">
+        <ion-icon name="copy"></ion-icon>
+        <ion-label>Copy Pin</ion-label>
+      </button>
+    </ion-fab-list>
+
+  </ion-fab>
+
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)" threshold="50px">
+    <ion-infinite-scroll-content>
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

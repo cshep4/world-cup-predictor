@@ -37,19 +37,26 @@ export class HomePage {
     this.navCtrl.parent.select(3);
   }
 
-  private loadScoreAndRank() {
+  private loadScoreAndRank(refresher?) {
       const token = localStorage.getItem('token');
       const userId = localStorage.getItem('userId');
       this.scoreService.retrieveScoreAndRank(token, userId).then((result) => {
+          if (refresher) {
+              refresher.complete();
+          }
+
           this.data = result;
 
           this.score = "Pts: " + this.data.body.score;
           this.rank = "Rank: " + this.data.body.rank;
+          this.scoreRetrievable = true;
 
           let token = this.data.headers.get('X-Auth-Token');
           localStorage.setItem('token', token);
-
       }, (err) => {
+          if (refresher) {
+            refresher.complete();
+          }
           this.scoreRetrievable = false;
       });
   }

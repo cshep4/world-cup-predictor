@@ -38,7 +38,9 @@ export class LoginPage {
           const userId = this.data.headers.get('userId');
           localStorage.setItem('userId', userId);
 
-          this.navCtrl.setRoot(TabsPage);
+          this.navCtrl.insert(0,TabsPage);
+          this.navCtrl.popToRoot();
+          // this.navCtrl.setRoot(TabsPage);
       }, (err) => {
           this.loading.dismiss();
           Utils.presentToast("Error logging in", this.toastCtrl);

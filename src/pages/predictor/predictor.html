@@ -17,6 +17,9 @@
 </ion-header>
 
 <ion-content padding>
+  <ion-refresher (ionRefresh)="loadMatchesWithPredictions($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <ion-card *ngFor="let item of matches | matchfilter:filterargs">
       <ion-grid>
         <ion-row text-center>
@@ -25,7 +28,7 @@
           </ion-col>
         </ion-row>
         <ion-row  text-center class="v-center">
-          <ion-col col-3 class="h-center home-team">
+          <ion-col col-3 class="h-center team">
             {{ item.hTeam  || "TBC" }}
           </ion-col>
           <ion-col col-2 class="h-center score-input">
@@ -37,7 +40,7 @@
           <ion-col class="h-center" col-2 class="h-center score-input">
             <input [disabled]="hasDatePassed(item.dateTime)" class="h-center" type="number" min="0" max="99" name="ag{{item.id}}" [(ngModel)]="item.aGoals">
           </ion-col>
-          <ion-col col-3 class="h-center away-team">
+          <ion-col col-3 class="h-center team">
             {{ item.aTeam  || "TBC" }}
           </ion-col>
         </ion-row>

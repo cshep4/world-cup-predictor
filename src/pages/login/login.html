@@ -7,6 +7,9 @@
 <ion-content padding>
   <form (submit)="doLogin()">
     <ion-item>
+      <img src="assets/img/logo.png" class="center">
+    </ion-item>
+    <ion-item>
       <ion-label stacked>Email</ion-label>
       <ion-input [(ngModel)]="loginData.email" name="email" type="text" placeholder="Email" ></ion-input>
     </ion-item>

@@ -5,6 +5,8 @@ import {LoginPage} from "../login/login";
 import {AuthService} from "../../providers/auth-service";
 import Utils from "../../utils/utils";
 import {AdMobFree} from "@ionic-native/admob-free";
+import UserUtils from "../../utils/user-utils";
+import {AccountService} from "../../providers/account-service";
 
 @Component({
   selector: 'page-account',
@@ -12,11 +14,20 @@ import {AdMobFree} from "@ionic-native/admob-free";
 })
 export class AccountPage {
   loading: any;
+  data: any;
+  accountData = { id: 0, firstName: '', surname: '', email:''};
+  passwordData = { id: 0, oldPassword:'', newPassword:'', confirmPassword: '' };
   isLoggedIn: boolean = false;
+  isPasswordBetween6And20Characters = UserUtils.isPasswordBetween6And20Characters;
+  doesPasswordContainUppercaseLetters = UserUtils.doesPasswordContainUppercaseLetters;
+  doesPasswordContainLowercaseLetters = UserUtils.doesPasswordContainLowercaseLetters;
+  doesPasswordContainNumbers = UserUtils.doesPasswordContainNumbers;
+  doPasswordsMatch = UserUtils.doPasswordsMatch;
 
   constructor(public app: App,
               public navCtrl: NavController,
               public authService: AuthService,
+              public accountService: AccountService,
               public loadingCtrl: LoadingController,
               private toastCtrl: ToastController,
               public admob: AdMobFree,
@@ -28,6 +39,30 @@ export class AccountPage {
 
   ionViewDidEnter() {
     Utils.showBanner(this.plt, this.admob);
+    this.loadAccountDetails();
+  }
+
+  loadAccountDetails() {
+    this.loading = Utils.showLoader('Retrieving account details...', this.loadingCtrl);
+
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+
+    this.accountService.retrieveAccount(userId, token).then((result) => {
+      this.loading.dismiss();
+      this.data = result;
+
+      this.accountData.email = this.data.body.email;
+      this.accountData.firstName = this.data.body.firstName;
+      this.accountData.surname = this.data.body.surname;
+
+      let token = this.data.headers.get('X-Auth-Token');
+      localStorage.setItem('token', token);
+
+    }, (err) => {
+      this.loading.dismiss();
+      Utils.presentToast(err, this.toastCtrl);
+    });
   }
 
   logout() {
@@ -39,5 +74,51 @@ export class AccountPage {
     });
     let nav = this.app.getRootNav();
     nav.setRoot(LoginPage);
+  }
+
+  updateUserDetails() {
+    this.loading = Utils.showLoader('Updating details...', this.loadingCtrl);
+
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+    this.accountData.id = parseInt(userId);
+
+    this.accountService.updateUserDetails(this.accountData, token).then((result) => {
+      this.loading.dismiss();
+      this.data = result;
+
+      Utils.presentToast("Details updated!", this.toastCtrl);
+
+      let token = this.data.headers.get('X-Auth-Token');
+      localStorage.setItem('token', token);
+
+    }, (err) => {
+      this.loading.dismiss();
+      Utils.presentToast(err, this.toastCtrl);
+    });
+  }
+
+  updatePassword() {
+    this.loading = Utils.showLoader('Updating password...', this.loadingCtrl);
+
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+    this.passwordData.id = parseInt(userId);
+
+    this.accountService.updateUserPassword(this.passwordData, token).then((result) => {
+      this.loading.dismiss();
+      this.data = result;
+
+      this.passwordData = { id: 0, oldPassword:'', newPassword:'', confirmPassword: '' };
+
+      Utils.presentToast("Password updated!", this.toastCtrl);
+
+      let token = this.data.headers.get('X-Auth-Token');
+      localStorage.setItem('token', token);
+
+    }, (err) => {
+      this.loading.dismiss();
+      Utils.presentToast(err, this.toastCtrl);
+    });
   }
 }

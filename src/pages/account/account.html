@@ -3,11 +3,80 @@
     <ion-title>
       Account
     </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="logout()">
+        <ion-icon name="log-out"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <button ion-button block (click)="logout()">
-    Logout
+  <ion-item>
+    <ion-label stacked>First Name</ion-label>
+    <ion-input [(ngModel)]="accountData.firstName" name="firstName" type="text" placeholder="Your first name" ></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label stacked>Surname</ion-label>
+    <ion-input [(ngModel)]="accountData.surname" name="surname" type="text" placeholder="Your surname" ></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label stacked>Email</ion-label>
+    <ion-input [(ngModel)]="accountData.email" name="email" type="text" placeholder="Your email" ></ion-input>
+  </ion-item>
+  <button ion-button block (click)="updateUserDetails()">
+    Update Details
+  </button>
+  <ion-item>
+    <ion-label stacked>Old Password</ion-label>
+    <ion-input [(ngModel)]="passwordData.oldPassword" name="password" type="password" placeholder="Old password"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label stacked>New Password</ion-label>
+    <ion-input [(ngModel)]="passwordData.newPassword" name="password" type="password" placeholder="New password"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label stacked>Confirm Password</ion-label>
+    <ion-input [(ngModel)]="passwordData.confirmPassword" name="confirmPassword" type="password" placeholder="Confirm password"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label stacked color="dark">
+      <ion-icon color="red" *ngIf="!isPasswordBetween6And20Characters(passwordData.newPassword)" name="close-circle"></ion-icon>
+      <ion-icon color="green" *ngIf="isPasswordBetween6And20Characters(passwordData.newPassword)" name="checkmark-circle"></ion-icon>
+      <span [ngStyle]="{'color': isPasswordBetween6And20Characters(passwordData.newPassword) ? 'green' : 'red'}">
+          Password length must be between 6 and 20
+      </span>
+    </ion-label>
+    <ion-label stacked color="dark">
+      <ion-icon color="red" *ngIf="!doesPasswordContainUppercaseLetters(passwordData.newPassword)" name="close-circle"></ion-icon>
+      <ion-icon color="green" *ngIf="doesPasswordContainUppercaseLetters(passwordData.newPassword)" name="checkmark-circle"></ion-icon>
+      <span [ngStyle]="{'color': doesPasswordContainUppercaseLetters(passwordData.newPassword) ? 'green' : 'red'}">
+          Password must contain an uppercase letter.
+      </span>
+    </ion-label>
+    <ion-label stacked color="dark">
+      <ion-icon color="red" *ngIf="!doesPasswordContainLowercaseLetters(passwordData.newPassword)" name="close-circle"></ion-icon>
+      <ion-icon color="green" *ngIf="doesPasswordContainLowercaseLetters(passwordData.newPassword)" name="checkmark-circle"></ion-icon>
+      <span [ngStyle]="{'color': doesPasswordContainLowercaseLetters(passwordData.newPassword) ? 'green' : 'red'}">
+          Password must contain a lowercase letter.
+      </span>
+    </ion-label>
+    <ion-label stacked color="dark">
+      <ion-icon color="red" *ngIf="!doesPasswordContainNumbers(passwordData.newPassword)" name="close-circle"></ion-icon>
+      <ion-icon color="green" *ngIf="doesPasswordContainNumbers(passwordData.newPassword)" name="checkmark-circle"></ion-icon>
+      <span [ngStyle]="{'color': doesPasswordContainNumbers(passwordData.newPassword) ? 'green' : 'red'}">
+          Password must contain a number.
+      </span>
+    </ion-label>
+    <ion-label stacked color="dark">
+      <ion-icon color="red" *ngIf="!doPasswordsMatch(passwordData.newPassword, passwordData.confirmPassword)" name="close-circle"></ion-icon>
+      <ion-icon color="green" *ngIf="doPasswordsMatch(passwordData.newPassword, passwordData.confirmPassword)" name="checkmark-circle"></ion-icon>
+      <span [ngStyle]="{'color': doPasswordsMatch(passwordData.newPassword, passwordData.confirmPassword) ? 'green' : 'red'}">
+          Passwords must match.
+      </span>
+    </ion-label>
+  </ion-item>
+  <button ion-button block (click)="updatePassword()">
+    Update Password
   </button>
 </ion-content>

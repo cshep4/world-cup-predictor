@@ -38,12 +38,18 @@ export class PredictorPage {
     }
   }
 
-  loadMatchesWithPredictions() {
-      this.loading = Utils.showLoader('Loading Predictions...', this.loadingCtrl);
+  loadMatchesWithPredictions(refresher?) {
+      if (!refresher) {
+          this.loading = Utils.showLoader('Loading Predictions...', this.loadingCtrl);
+      }
       const token = localStorage.getItem('token');
       const userId = localStorage.getItem('userId');
       this.matchService.retrievePredictedMatches(token, userId).then((result) => {
-          this.loading.dismiss();
+          if (!refresher) {
+              this.loading.dismiss();
+          } else {
+              refresher.complete();
+          }
           this.data = result;
           this.matches = this.data.body.map(m => <Match>({
               id : m.id,
@@ -62,7 +68,11 @@ export class PredictorPage {
           let token = this.data.headers.get('X-Auth-Token');
           localStorage.setItem('token', token);
       }, (err) => {
-          this.loading.dismiss();
+          if (!refresher) {
+            this.loading.dismiss();
+          } else {
+            refresher.complete();
+          }
           Utils.presentToast("Error loading predictions", this.toastCtrl);
       });
   }

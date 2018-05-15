@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 
-import {LoadingController, NavController, Platform, ToastController} from 'ionic-angular';
+import {LoadingController, Platform, ToastController} from 'ionic-angular';
 import Utils from "../../utils/utils";
 import {TournamentService} from "../../providers/tournament-service";
 import MatchUtils from "../../utils/match-utils";
@@ -17,8 +17,7 @@ export class TournamentPage {
   loading: any;
   data: any;
 
-  constructor(public navCtrl: NavController,
-              public tournamentService: TournamentService,
+  constructor(public tournamentService: TournamentService,
               public loadingCtrl: LoadingController,
               private toastCtrl: ToastController,
               public admob: AdMobFree,
@@ -42,24 +41,30 @@ export class TournamentPage {
     this.getStandings();
   }
 
-  getStandings() {
+  getStandings(refresher?) {
     if (this.standingsType == "current") {
-      if (!this.currentTables[0].standings) {
-        this.getCurrentLeagueTable();
+      if (!this.currentTables[0].standings || refresher) {
+        this.getCurrentLeagueTable(refresher);
       }
     } else {
-      if (!this.predictedTables[0].standings || MatchUtils.refreshData) {
-        this.getPredictedLeagueTable();
+      if (!this.predictedTables[0].standings || MatchUtils.refreshData  || refresher) {
+        this.getPredictedLeagueTable(refresher);
       }
     }
   }
 
-  getCurrentLeagueTable() {
-    this.loading = Utils.showLoader('Loading Current Standings...', this.loadingCtrl);
+  getCurrentLeagueTable(refresher?) {
+    if (!refresher) {
+      this.loading = Utils.showLoader('Loading Current Standings...', this.loadingCtrl);
+    }
     const token = localStorage.getItem('token');
 
     this.tournamentService.retrieveCurrentLeagueTable(token).then((result) => {
-      this.loading.dismiss();
+      if (!refresher) {
+        this.loading.dismiss();
+      } else {
+        refresher.complete();
+      }
       this.data = result;
 
       this.currentTables[0].standings = this.data.body.standings;
@@ -69,18 +74,28 @@ export class TournamentPage {
       let token = this.data.headers.get('X-Auth-Token');
       localStorage.setItem('token', token);
     }, (err) => {
-      this.loading.dismiss();
+      if (!refresher) {
+        this.loading.dismiss();
+      } else {
+        refresher.complete();
+      }
       Utils.presentToast("Error loading standings", this.toastCtrl);
     });
   }
 
-  getPredictedLeagueTable() {
-    this.loading = Utils.showLoader('Loading Predicted Standings...', this.loadingCtrl);
+  getPredictedLeagueTable(refresher?) {
+    if (!refresher) {
+      this.loading = Utils.showLoader('Loading Predicted Standings...', this.loadingCtrl);
+    }
     const token = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
 
     this.tournamentService.retrievePredictedLeagueTable(token, userId).then((result) => {
-      this.loading.dismiss();
+      if (!refresher) {
+        this.loading.dismiss();
+      } else {
+        refresher.complete();
+      }
       this.data = result;
 
       this.predictedTables[0].standings = this.data.body.standings;
@@ -91,7 +106,11 @@ export class TournamentPage {
       let token = this.data.headers.get('X-Auth-Token');
       localStorage.setItem('token', token);
     }, (err) => {
-      this.loading.dismiss();
+      if (!refresher) {
+        this.loading.dismiss();
+      } else {
+        refresher.complete();
+      }
       Utils.presentToast("Error loading standings", this.toastCtrl);
     });
   }
