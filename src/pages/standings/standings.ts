@@ -18,15 +18,13 @@ export class StandingsPage {
   loading: any;
   data: any;
 
-  constructor(public navCtrl: NavController,
-              public standingsService: StandingsService,
-              public loadingCtrl: LoadingController,
+  constructor(private navCtrl: NavController,
+              private standingsService: StandingsService,
+              private loadingCtrl: LoadingController,
               private toastCtrl: ToastController,
-              public admob: AdMobFree,
-              public plt: Platform,
-              public alertCtrl: AlertController) {}
-
-  ionViewDidEnter() {
+              private admob: AdMobFree,
+              private plt: Platform,
+              private alertCtrl: AlertController) {
     Utils.showBanner(this.plt, this.admob);
 
     if (!this.leagues || Utils.refreshLeagues) {

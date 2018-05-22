@@ -31,16 +31,20 @@ export default class Utils {
 
   static showBanner(plt, admob) {
     let id;
+    let atTop;
     if (plt.is('ios')) {
       id = 'ca-app-pub-8783352058311313/2155818570';
+      atTop = false;
     } else {
       id = 'ca-app-pub-8783352058311313/3760544283';
+      atTop = true;
     }
 
     let bannerConfig: AdMobFreeBannerConfig = {
       isTesting: true, // Remove in production
       autoShow: true,
-      id: id
+      id: id,
+      bannerAtTop: atTop
     };
 
     admob.banner.config(bannerConfig);

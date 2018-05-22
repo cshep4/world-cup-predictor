@@ -1,14 +1,14 @@
 import {Component} from '@angular/core';
 
-import {LoadingController, NavController, Platform, PopoverController, ToastController} from 'ionic-angular';
+import {LoadingController, Platform, PopoverController, ToastController} from 'ionic-angular';
 import {MatchService} from "../../providers/match-service";
 import MatchUtils from "../../utils/match-utils";
 import Utils from "../../utils/utils";
 import {GroupPopover} from "../../components/group-popover/group-popover";
 import {Prediction} from "../../models/Prediction";
 import {Match} from "../../models/Match";
-import {TournamentService} from "../../providers/tournament-service";
 import {AdMobFree} from "@ionic-native/admob-free";
+import {WheelSelector} from "@ionic-native/wheel-selector";
 
 @Component({
   selector: 'page-predictor',
@@ -22,19 +22,58 @@ export class PredictorPage {
   phase = "Group A";
   predictions: [Prediction];
 
-  constructor(public navCtrl: NavController,
-              public matchService: MatchService,
-              public loadingCtrl: LoadingController,
+  constructor(private matchService: MatchService,
+              private loadingCtrl: LoadingController,
               private toastCtrl: ToastController,
-              public popoverCtrl: PopoverController,
-              public tournamentService: TournamentService,
-              public admob: AdMobFree,
-              public plt: Platform) {}
-
-  ionViewDidEnter() {
+              private popoverCtrl: PopoverController,
+              private admob: AdMobFree,
+              private plt: Platform,
+              private selector: WheelSelector) {
     Utils.showBanner(this.plt, this.admob);
     if (!this.matches) {
       this.loadMatchesWithPredictions();
+    }
+  }
+
+  ionViewDidEnter() {
+    this.selector.hideSelector();
+  }
+
+  selectGoals(match, teamName) {
+    let title = "Goals for " + teamName;
+    if (!this.hasDatePassed(match.dateTime)) {
+      this.selector.show({
+        title: title,
+        items: [
+          [
+            {description: "0"},
+            {description: "1"},
+            {description: "2"},
+            {description: "3"},
+            {description: "4"},
+            {description: "5"},
+            {description: "6"},
+            {description: "7"},
+            {description: "8"},
+            {description: "9"},
+            {description: "10"},
+            {description: "11"},
+            {description: "12"},
+            {description: "13"},
+            {description: "14"},
+            {description: "15"}
+          ]
+        ],
+      }).then(
+        result => {
+          if (match.hTeam === teamName) {
+            match.hGoals = result[0].description;
+          } else {
+            match.aGoals = result[0].description;
+          }
+        },
+        err => console.log('Error: ', err)
+      );
     }
   }
 
@@ -103,7 +142,9 @@ export class PredictorPage {
       const userId = localStorage.getItem("userId");
 
       this.predictions = this.matches
-        .filter(m => m.hGoals && m.aGoals)
+        .filter(m => m.hGoals !== undefined && m.aGoals !== undefined)
+        .filter(m => m.hGoals !== null && m.aGoals !== null)
+        .filter(m => m.hGoals !== '' && m.aGoals !== '')
         .filter(m => !isNaN(m.hGoals) && !isNaN(m.aGoals))
         .map(m => <Prediction>({
             id : m.predictionId,

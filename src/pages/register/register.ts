@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {LoadingController, NavController, NavParams, Platform, ToastController} from 'ionic-angular';
+import {LoadingController, NavController, Platform, ToastController} from 'ionic-angular';
 import {AuthService} from '../../providers/auth-service';
 import {TabsPage} from "../tabs/tabs";
 import Utils from "../../utils/utils";
@@ -20,15 +20,12 @@ export class RegisterPage {
     doesPasswordContainNumbers = UserUtils.doesPasswordContainNumbers;
     doPasswordsMatch = UserUtils.doPasswordsMatch;
 
-    constructor(public navCtrl: NavController,
-                public navParams: NavParams,
-                public authService: AuthService,
-                public loadingCtrl: LoadingController,
+    constructor(private navCtrl: NavController,
+                private authService: AuthService,
+                private loadingCtrl: LoadingController,
                 private toastCtrl: ToastController,
-                public admob: AdMobFree,
-                public plt: Platform) {}
-
-    ionViewDidEnter() {
+                private admob: AdMobFree,
+                private plt: Platform) {
       Utils.showBanner(this.plt, this.admob);
     }
 

@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 
-import {App, LoadingController, NavController, Platform, ToastController} from 'ionic-angular';
+import {App, LoadingController, Platform, ToastController} from 'ionic-angular';
 import {LoginPage} from "../login/login";
 import {AuthService} from "../../providers/auth-service";
 import Utils from "../../utils/utils";
@@ -24,20 +24,16 @@ export class AccountPage {
   doesPasswordContainNumbers = UserUtils.doesPasswordContainNumbers;
   doPasswordsMatch = UserUtils.doPasswordsMatch;
 
-  constructor(public app: App,
-              public navCtrl: NavController,
-              public authService: AuthService,
-              public accountService: AccountService,
-              public loadingCtrl: LoadingController,
+  constructor(private app: App,
+              private authService: AuthService,
+              private accountService: AccountService,
+              private loadingCtrl: LoadingController,
               private toastCtrl: ToastController,
-              public admob: AdMobFree,
-              public plt: Platform) {
+              private admob: AdMobFree,
+              private plt: Platform) {
     if(localStorage.getItem("token")) {
       this.isLoggedIn = true;
     }
-  }
-
-  ionViewDidEnter() {
     Utils.showBanner(this.plt, this.admob);
     this.loadAccountDetails();
   }

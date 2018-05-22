@@ -17,11 +17,11 @@ export class TournamentPage {
   loading: any;
   data: any;
 
-  constructor(public tournamentService: TournamentService,
-              public loadingCtrl: LoadingController,
+  constructor(private tournamentService: TournamentService,
+              private loadingCtrl: LoadingController,
               private toastCtrl: ToastController,
-              public admob: AdMobFree,
-              public plt: Platform) {
+              private admob: AdMobFree,
+              private plt: Platform) {
     this.standingsType = "current";
 
     let standings = [{
@@ -34,10 +34,11 @@ export class TournamentPage {
 
     this.currentTables = JSON.parse(JSON.stringify(standings));
     this.predictedTables = JSON.parse(JSON.stringify(standings));
+
+    Utils.showBanner(this.plt, this.admob);
   }
 
   ionViewDidEnter() {
-    Utils.showBanner(this.plt, this.admob);
     this.getStandings();
   }
 

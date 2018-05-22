@@ -45,7 +45,7 @@
     </ion-row>
   </ion-list>
 
-  <ion-fab bottom right>
+  <ion-fab *ngIf="leagueOverview.pin" bottom right>
     <button ion-fab>
       <ion-icon name="arrow-dropup"></ion-icon>
     </button>
@@ -54,7 +54,7 @@
         <ion-icon name="log-out"></ion-icon>
         <ion-label>Leave League</ion-label>
       </button>
-      <button ion-fab color="dark-grey" *ngIf="leagueOverview.pin" (click)="copyPin()">
+      <button ion-fab color="dark-grey" (click)="copyPin()">
         <ion-icon name="copy"></ion-icon>
         <ion-label>Copy Pin</ion-label>
       </button>

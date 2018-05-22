@@ -23,6 +23,8 @@ import {StandingsService} from "../providers/standings-service";
 import {LeaguePage} from "../pages/league/league";
 import {Clipboard} from "@ionic-native/clipboard";
 import {AccountService} from "../providers/account-service";
+import {Keyboard} from "ionic-native";
+import {WheelSelector} from "@ionic-native/wheel-selector";
 
 @NgModule({
   declarations: [
@@ -41,7 +43,11 @@ import {AccountService} from "../providers/account-service";
     LeaguePage
   ],
   imports: [
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp, {
+      scrollPadding: false,
+      scrollAssist: true,
+      autoFocusAssist: false
+    }),
     BrowserModule,
     HttpClientModule
   ],
@@ -68,6 +74,8 @@ import {AccountService} from "../providers/account-service";
     StandingsService,
     AdMobFree,
     AccountService,
-    Clipboard]
+    Clipboard,
+    Keyboard,
+    WheelSelector]
 })
 export class AppModule {}

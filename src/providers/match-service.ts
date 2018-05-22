@@ -28,6 +28,7 @@ export class MatchService {
   }
 
   savePredictions(token, predictions) {
+    console.log(predictions);
     return new Promise((resolve, reject) => {
       const headers = new HttpHeaders()
         .set("Content-Type", 'application/json')

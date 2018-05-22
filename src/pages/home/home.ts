@@ -15,22 +15,20 @@ export class HomePage {
   rank: string;
   scoreRetrievable = true;
 
-  constructor(public navCtrl: NavController,
-              public admob: AdMobFree,
-              public plt: Platform,
-              private scoreService: ScoreService) {}
+  constructor(private navCtrl: NavController,
+              private admob: AdMobFree,
+              private plt: Platform,
+              private scoreService: ScoreService) {
+    Utils.showBanner(this.plt, this.admob);
 
-  ionViewDidEnter() {
-      Utils.showBanner(this.plt, this.admob);
+    if (MatchUtils.refreshData) {
+      this.score = null;
+      this.rank = null;
+    }
 
-      if (MatchUtils.refreshData) {
-        this.score = null;
-        this.rank = null;
-      }
-
-      if (!this.score || !this.rank) {
-        this.loadScoreAndRank();
-      }
+    if (!this.score || !this.rank) {
+      this.loadScoreAndRank();
+    }
   }
 
   goToStandingsPage() {

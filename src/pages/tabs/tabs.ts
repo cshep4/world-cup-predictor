@@ -16,10 +16,11 @@ export class TabsPage {
   tab3Root: any = TournamentPage;
   tab4Root: any = StandingsPage;
   tab5Root: any = AccountPage;
+  tabs: any;
 
-  constructor(public navCtrl: NavController) {
+  constructor(private navCtrl: NavController) {
     if(!localStorage.getItem("token")) {
-      navCtrl.setRoot(LoginPage);
+      this.navCtrl.setRoot(LoginPage);
     }
   }
 }

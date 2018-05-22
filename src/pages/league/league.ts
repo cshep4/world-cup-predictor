@@ -4,7 +4,6 @@ import {Component} from "@angular/core";
 import Utils from "../../utils/utils";
 import {StandingsService} from "../../providers/standings-service";
 import {LeagueTablePlayer} from "../../models/LeagueTablePlayer";
-import {LeaguePopover} from "../../components/league-popover/league-popover";
 import {Clipboard} from "@ionic-native/clipboard";
 
 @Component({
@@ -30,11 +29,8 @@ export class LeaguePage {
               private standingsService: StandingsService,
               private alertCtrl: AlertController,
               private clipboard: Clipboard) {
-    this.leagueOverview = params.get('league');
+    this.leagueOverview = this.params.get('league');
     this.userId = Number(localStorage.getItem('userId'));
-  }
-
-  ionViewDidEnter() {
     Utils.showBanner(this.plt, this.admob);
     this.loadLeagueTable();
   }

@@ -16,14 +16,12 @@ export class LoginPage {
   loginData = { email:'', password:'' };
   data: any;
 
-  constructor(public navCtrl: NavController,
-              public authService: AuthService,
-              public loadingCtrl: LoadingController,
+  constructor(private navCtrl: NavController,
+              private authService: AuthService,
+              private loadingCtrl: LoadingController,
               private toastCtrl: ToastController,
-              public admob: AdMobFree,
-              public plt: Platform) {}
-
-  ionViewDidEnter() {
+              private admob: AdMobFree,
+              private plt: Platform) {
     Utils.showBanner(this.plt, this.admob);
   }
 

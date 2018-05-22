@@ -31,28 +31,28 @@
         <ion-icon color="red" *ngIf="!isPasswordBetween6And20Characters(regData.password)" name="close-circle"></ion-icon>
         <ion-icon color="green" *ngIf="isPasswordBetween6And20Characters(regData.password)" name="checkmark-circle"></ion-icon>
         <span [ngStyle]="{'color': isPasswordBetween6And20Characters(regData.password) ? 'green' : 'red'}">
-          Password length must be between 6 and 20
+          Between 6 and 20 characters.
         </span>
       </ion-label>
       <ion-label stacked color="dark">
         <ion-icon color="red" *ngIf="!doesPasswordContainUppercaseLetters(regData.password)" name="close-circle"></ion-icon>
         <ion-icon color="green" *ngIf="doesPasswordContainUppercaseLetters(regData.password)" name="checkmark-circle"></ion-icon>
         <span [ngStyle]="{'color': doesPasswordContainUppercaseLetters(regData.password) ? 'green' : 'red'}">
-          Password must contain an uppercase letter.
+          Contain an uppercase letter.
         </span>
       </ion-label>
       <ion-label stacked color="dark">
         <ion-icon color="red" *ngIf="!doesPasswordContainLowercaseLetters(regData.password)" name="close-circle"></ion-icon>
         <ion-icon color="green" *ngIf="doesPasswordContainLowercaseLetters(regData.password)" name="checkmark-circle"></ion-icon>
         <span [ngStyle]="{'color': doesPasswordContainLowercaseLetters(regData.password) ? 'green' : 'red'}">
-          Password must contain a lowercase letter.
+          Contain a lowercase letter.
         </span>
       </ion-label>
       <ion-label stacked color="dark">
         <ion-icon color="red" *ngIf="!doesPasswordContainNumbers(regData.password)" name="close-circle"></ion-icon>
         <ion-icon color="green" *ngIf="doesPasswordContainNumbers(regData.password)" name="checkmark-circle"></ion-icon>
         <span [ngStyle]="{'color': doesPasswordContainNumbers(regData.password) ? 'green' : 'red'}">
-          Password must contain a number.
+          Contain a number.
         </span>
       </ion-label>
       <ion-label stacked color="dark">
