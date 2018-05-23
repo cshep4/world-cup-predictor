@@ -41,7 +41,6 @@ export default class Utils {
     }
 
     let bannerConfig: AdMobFreeBannerConfig = {
-      isTesting: true, // Remove in production
       autoShow: true,
       id: id,
       bannerAtTop: atTop
