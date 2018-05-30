@@ -39,7 +39,7 @@ export class PredictorPage {
     this.selector.hideSelector();
   }
 
-  selectGoals(match, teamName) {
+  selectGoals(match, teamName, isHome) {
     let title = "Goals for " + teamName;
     if (!this.hasDatePassed(match.dateTime)) {
       this.selector.show({
@@ -66,7 +66,7 @@ export class PredictorPage {
         ],
       }).then(
         result => {
-          if (match.hTeam === teamName) {
+          if (isHome) {
             match.hGoals = result[0].description;
           } else {
             match.aGoals = result[0].description;
