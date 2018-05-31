@@ -162,12 +162,24 @@ export class PredictorPage {
           MatchUtils.refreshData = true;
 
           this.data = result;
+
+          for (let i = 0; i < this.matches.length; i++) {
+            if (this.hasPredictionBeenAdded(this.matches[i])) {
+              let newPrediction = this.data.body.find(p => p.matchId == this.matches[i].id);
+              this.matches[i].predictionId = newPrediction.id;
+            }
+          }
+
           const token = this.data.headers.get('X-Auth-Token');
           localStorage.setItem('token', token);
       }, (err) => {
           this.loading.dismiss();
           Utils.presentToast("Error saving predictions, please try again", this.toastCtrl);
       });
+  }
+
+  private hasPredictionBeenAdded(prediction) {
+    return this.data.body.filter(p => p.matchId == prediction.id).length != 0
   }
 
   hasDatePassed(dateTime) {
