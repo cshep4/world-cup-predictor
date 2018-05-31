@@ -14,22 +14,22 @@
   <ion-list *ngIf="displayedTable">
     <!-- Table headers -->
     <ion-row class="child-item v-center">
-      <ion-col class="center-text" col-1></ion-col>
+      <ion-col class="center-text" col-2></ion-col>
       <ion-col class="center-text" col-4>
         <strong>Player</strong>
       </ion-col>
       <ion-col class="center-text" col-4>
         <strong>Predicted Winner</strong>
       </ion-col>
-      <ion-col class="center-text" col-3>
-        <strong>Score</strong>
+      <ion-col class="center-text" col-2>
+        <strong>Pts.</strong>
       </ion-col>
     </ion-row>
 
 
     <!-- Table data -->
     <ion-row *ngFor="let item of displayedTable; let k = index" detail-none class="child-item v-center" text-wrap>
-      <ion-col class="center-text" col-1 [ngStyle]="{'color': userId == item.id ? '#af3434' : 'black'}">
+      <ion-col class="center-text" col-2 [ngStyle]="{'color': userId == item.id ? '#af3434' : 'black'}">
         {{ k + 1 }}
       </ion-col>
       <ion-col class="center-text" col-4 [ngStyle]="{'color': userId == item.id ? '#af3434' : 'black'}">
@@ -38,7 +38,7 @@
       <ion-col class="center-text" col-4 [ngStyle]="{'color': userId == item.id ? '#af3434' : 'black'}">
         {{ item.predictedWinner }}
       </ion-col>
-      <ion-col class="center-text" col-3 [ngStyle]="{'color': userId == item.id ? '#af3434' : 'black'}">
+      <ion-col class="center-text" col-2 [ngStyle]="{'color': userId == item.id ? '#af3434' : 'black'}">
         {{ item.score }}
       </ion-col>
 
