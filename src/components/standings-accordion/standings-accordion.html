@@ -87,7 +87,7 @@
 
         <ion-list *ngIf="child.matches && child.open">
           <ion-card *ngFor="let item of child.matches">
-            <ion-grid>
+            <ion-list>
               <ion-row text-center>
                 <ion-col class="h-center" col-12>
                   {{item.dateTime | date : "EEE, d MMMM yyyy, ha" }}
@@ -110,7 +110,7 @@
                   {{ item.ateam  || "TBC" }}
                 </ion-col>
               </ion-row>
-            </ion-grid>
+            </ion-list>
           </ion-card>
         </ion-list>
 

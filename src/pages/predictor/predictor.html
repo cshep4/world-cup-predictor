@@ -21,7 +21,7 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <ion-card *ngFor="let item of matches | matchfilter:filterargs">
-      <ion-grid>
+      <ion-list>
         <ion-row text-center>
           <ion-col class="h-center" col-12>
             {{item.dateTime | date : "EEE, d MMMM yyyy, ha" }}
@@ -44,6 +44,6 @@
             {{ item.aTeam  || "TBC" }}
           </ion-col>
         </ion-row>
-      </ion-grid>
+      </ion-list>
   </ion-card>
 </ion-content>
