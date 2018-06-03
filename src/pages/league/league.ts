@@ -5,6 +5,7 @@ import Utils from "../../utils/utils";
 import {StandingsService} from "../../providers/standings-service";
 import {LeagueTablePlayer} from "../../models/LeagueTablePlayer";
 import {Clipboard} from "@ionic-native/clipboard";
+import {Storage} from "@ionic/storage";
 
 @Component({
   selector: 'page-league',
@@ -28,9 +29,12 @@ export class LeaguePage {
               private params: NavParams,
               private standingsService: StandingsService,
               private alertCtrl: AlertController,
-              private clipboard: Clipboard) {
+              private clipboard: Clipboard,
+              private storage: Storage) {
     this.leagueOverview = this.params.get('league');
-    this.userId = Number(localStorage.getItem('userId'));
+    this.storage.get('userId').then((userId) => {
+      this.userId = Number(userId);
+    });
     Utils.showBanner(this.plt, this.admob);
     this.loadLeagueTable();
   }
@@ -48,36 +52,32 @@ export class LeaguePage {
       this.loading = Utils.showLoader('Loading League Table...', this.loadingCtrl);
     }
     const pin = this.leagueOverview.pin;
-    const token = localStorage.getItem('token');
 
-    this.standingsService.getLeagueTable(token, pin).then((result) => {
-      if (!refresher) {
-        this.loading.dismiss();
-      } else {
-        refresher.complete();
-      }
-      this.data = result;
+    this.storage.get('token').then((token) => {
+      this.standingsService.getLeagueTable(token, pin).then((result) => {
+        Utils.dismissLoaders(this.loading, refresher);
+        this.data = result;
 
-      this.leagueTable = this.data.body.map(l => <LeagueTablePlayer>({
-        id: l.id,
-        firstName: l.firstName,
-        surname: l.surname,
-        predictedWinner: l.predictedWinner,
-        score: l.score
-      }));
+        this.leagueTable = this.data.body.map(l => <LeagueTablePlayer>({
+          id: l.id,
+          firstName: l.firstName,
+          surname: l.surname,
+          predictedWinner: l.predictedWinner,
+          score: l.score
+        }));
 
-      this.displayedTable = this.leagueTable.slice(0, this.numberToBeDisplayed);
-      this.currentIndex = this.displayedTable.length;
+        this.displayedTable = this.leagueTable.slice(0, this.numberToBeDisplayed);
+        this.currentIndex = this.displayedTable.length;
 
 
-      let token = this.data.headers.get('X-Auth-Token');
-      localStorage.setItem('token', token);
-    }, (err) => {
-      if (!refresher) {
-        this.loading.dismiss();
-      } else {
-        refresher.complete();
-      }
+        let token = this.data.headers.get('X-Auth-Token');
+        this.storage.set('token', token);
+      }, (err) => {
+        Utils.dismissLoaders(this.loading, refresher);
+        Utils.presentToast("Error loading league table", this.toastCtrl);
+      });
+    }, (error) => {
+      Utils.dismissLoaders(this.loading, refresher);
       Utils.presentToast("Error loading league table", this.toastCtrl);
     });
   }
@@ -118,21 +118,29 @@ export class LeaguePage {
 
   private leaveLeague() {
     this.loading = Utils.showLoader('Leaving League...', this.loadingCtrl);
-    const token = localStorage.getItem('token');
-    const userId = localStorage.getItem('userId');
-    const pin = this.leagueOverview.pin;
+    this.storage.get('token').then((token) => {
+      this.storage.get('userId').then((userId) => {
+        const pin = this.leagueOverview.pin;
 
-    this.standingsService.leaveLeague(token, userId, pin).then((result) => {
-      this.loading.dismiss();
-      this.data = result;
+        this.standingsService.leaveLeague(token, userId, pin).then((result) => {
+          this.loading.dismiss();
+          this.data = result;
 
-      Utils.presentToast("League left!", this.toastCtrl);
-      this.navCtrl.popToRoot();
-      Utils.refreshLeagues = true;
+          Utils.presentToast("League left!", this.toastCtrl);
+          this.navCtrl.popToRoot();
+          Utils.refreshLeagues = true;
 
-      let token = this.data.headers.get('X-Auth-Token');
-      localStorage.setItem('token', token);
-    }, (err) => {
+          let token = this.data.headers.get('X-Auth-Token');
+          this.storage.set('token', token);
+        }, (err) => {
+          this.loading.dismiss();
+          Utils.presentToast("Error leaving league", this.toastCtrl);
+        });
+      }, (error) => {
+        this.loading.dismiss();
+        Utils.presentToast("Error leaving league", this.toastCtrl);
+      });
+    }, (error) => {
       this.loading.dismiss();
       Utils.presentToast("Error leaving league", this.toastCtrl);
     });

@@ -7,6 +7,7 @@ import Utils from "../../utils/utils";
 import {AdMobFree} from "@ionic-native/admob-free";
 import UserUtils from "../../utils/user-utils";
 import {AccountService} from "../../providers/account-service";
+import {Storage} from "@ionic/storage";
 
 @Component({
   selector: 'page-account',
@@ -17,7 +18,6 @@ export class AccountPage {
   data: any;
   accountData = { id: 0, firstName: '', surname: '', email:''};
   passwordData = { id: 0, oldPassword:'', newPassword:'', confirmPassword: '' };
-  isLoggedIn: boolean = false;
   isPasswordBetween6And20Characters = UserUtils.isPasswordBetween6And20Characters;
   doesPasswordContainUppercaseLetters = UserUtils.doesPasswordContainUppercaseLetters;
   doesPasswordContainLowercaseLetters = UserUtils.doesPasswordContainLowercaseLetters;
@@ -30,91 +30,109 @@ export class AccountPage {
               private loadingCtrl: LoadingController,
               private toastCtrl: ToastController,
               private admob: AdMobFree,
-              private plt: Platform) {
-    if(localStorage.getItem("token")) {
-      this.isLoggedIn = true;
-    }
-    Utils.showBanner(this.plt, this.admob);
+              private plt: Platform,
+              private storage: Storage) {
     this.loadAccountDetails();
+    Utils.showBanner(this.plt, this.admob);
   }
 
   loadAccountDetails() {
     this.loading = Utils.showLoader('Retrieving account details...', this.loadingCtrl);
 
-    const token = localStorage.getItem('token');
-    const userId = localStorage.getItem('userId');
+    this.storage.get('token').then((token) => {
+      this.storage.get('userId').then((userId) => {
+        this.accountService.retrieveAccount(userId, token).then((result) => {
+          this.loading.dismiss();
+          this.data = result;
 
-    this.accountService.retrieveAccount(userId, token).then((result) => {
+          this.accountData.email = this.data.body.email;
+          this.accountData.firstName = this.data.body.firstName;
+          this.accountData.surname = this.data.body.surname;
+
+          let token = this.data.headers.get('X-Auth-Token');
+          this.storage.set('token', token);
+
+        }, (err) => {
+          this.loading.dismiss();
+          Utils.presentToast(err, this.toastCtrl);
+        });
+      }, (error) => {
+        this.loading.dismiss();
+        Utils.presentToast("Error retrieving account", this.toastCtrl);
+      });
+    }, (error) => {
       this.loading.dismiss();
-      this.data = result;
-
-      this.accountData.email = this.data.body.email;
-      this.accountData.firstName = this.data.body.firstName;
-      this.accountData.surname = this.data.body.surname;
-
-      let token = this.data.headers.get('X-Auth-Token');
-      localStorage.setItem('token', token);
-
-    }, (err) => {
-      this.loading.dismiss();
-      Utils.presentToast(err, this.toastCtrl);
+      Utils.presentToast("Error retrieving account", this.toastCtrl);
     });
   }
 
   logout() {
     this.loading = Utils.showLoader('Logging out...', this.loadingCtrl);
-    this.authService.logout().then((result) => {
-      this.loading.dismiss();
-    }, (err) => {
-      this.loading.dismiss();
-    });
+    this.storage.clear();
     let nav = this.app.getRootNav();
     nav.setRoot(LoginPage);
+    this.loading.dismiss();
   }
 
   updateUserDetails() {
     this.loading = Utils.showLoader('Updating details...', this.loadingCtrl);
 
-    const token = localStorage.getItem('token');
-    const userId = localStorage.getItem('userId');
-    this.accountData.id = parseInt(userId);
+    this.storage.get('token').then((token) => {
+      this.storage.get('userId').then((userId) => {
+        this.accountData.id = parseInt(userId);
 
-    this.accountService.updateUserDetails(this.accountData, token).then((result) => {
+        this.accountService.updateUserDetails(this.accountData, token).then((result) => {
+          this.loading.dismiss();
+          this.data = result;
+
+          Utils.presentToast("Details updated!", this.toastCtrl);
+
+          let token = this.data.headers.get('X-Auth-Token');
+          this.storage.set('token', token);
+
+        }, (err) => {
+          this.loading.dismiss();
+          Utils.presentToast(err, this.toastCtrl);
+        });
+      }, (error) => {
+        this.loading.dismiss();
+        Utils.presentToast("Error updating details", this.toastCtrl);
+      });
+    }, (error) => {
       this.loading.dismiss();
-      this.data = result;
-
-      Utils.presentToast("Details updated!", this.toastCtrl);
-
-      let token = this.data.headers.get('X-Auth-Token');
-      localStorage.setItem('token', token);
-
-    }, (err) => {
-      this.loading.dismiss();
-      Utils.presentToast(err, this.toastCtrl);
+      Utils.presentToast("Error updating details", this.toastCtrl);
     });
   }
 
   updatePassword() {
     this.loading = Utils.showLoader('Updating password...', this.loadingCtrl);
 
-    const token = localStorage.getItem('token');
-    const userId = localStorage.getItem('userId');
-    this.passwordData.id = parseInt(userId);
+    this.storage.get('token').then((token) => {
+      this.storage.get('userId').then((userId) => {
+        this.passwordData.id = parseInt(userId);
 
-    this.accountService.updateUserPassword(this.passwordData, token).then((result) => {
+        this.accountService.updateUserPassword(this.passwordData, token).then((result) => {
+          this.loading.dismiss();
+          this.data = result;
+
+          this.passwordData = { id: 0, oldPassword:'', newPassword:'', confirmPassword: '' };
+
+          Utils.presentToast("Password updated!", this.toastCtrl);
+
+          let token = this.data.headers.get('X-Auth-Token');
+          this.storage.set('token', token);
+
+        }, (err) => {
+          this.loading.dismiss();
+          Utils.presentToast(err, this.toastCtrl);
+        });
+      }, (error) => {
+        this.loading.dismiss();
+        Utils.presentToast("Error updating password", this.toastCtrl);
+      });
+    }, (error) => {
       this.loading.dismiss();
-      this.data = result;
-
-      this.passwordData = { id: 0, oldPassword:'', newPassword:'', confirmPassword: '' };
-
-      Utils.presentToast("Password updated!", this.toastCtrl);
-
-      let token = this.data.headers.get('X-Auth-Token');
-      localStorage.setItem('token', token);
-
-    }, (err) => {
-      this.loading.dismiss();
-      Utils.presentToast(err, this.toastCtrl);
+      Utils.presentToast("Error updating password", this.toastCtrl);
     });
   }
 }

@@ -5,6 +5,7 @@ import {TabsPage} from "../tabs/tabs";
 import Utils from "../../utils/utils";
 import {AdMobFree} from "@ionic-native/admob-free";
 import UserUtils from "../../utils/user-utils";
+import {Storage} from "@ionic/storage";
 
 @Component({
     selector: 'page-register',
@@ -25,7 +26,8 @@ export class RegisterPage {
                 private loadingCtrl: LoadingController,
                 private toastCtrl: ToastController,
                 private admob: AdMobFree,
-                private plt: Platform) {
+                private plt: Platform,
+                private storage: Storage) {
       Utils.showBanner(this.plt, this.admob);
     }
 
@@ -42,9 +44,10 @@ export class RegisterPage {
                 this.loading.dismiss();
 
                 this.data = result;
-                localStorage.setItem('token', this.data.headers.get('X-Auth-Token'));
+                const token = this.data.headers.get('X-Auth-Token');
+                this.storage.set('token', token);
                 const userId = this.data.headers.get('userId');
-                localStorage.setItem('userId', userId);
+                this.storage.set('userId', userId);
 
                 this.navCtrl.setRoot(TabsPage);
                 this.navCtrl.popToRoot();

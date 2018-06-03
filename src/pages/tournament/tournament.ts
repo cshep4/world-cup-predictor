@@ -5,6 +5,7 @@ import Utils from "../../utils/utils";
 import {TournamentService} from "../../providers/tournament-service";
 import MatchUtils from "../../utils/match-utils";
 import {AdMobFree} from "@ionic-native/admob-free";
+import {Storage} from "@ionic/storage";
 
 @Component({
   selector: 'page-tournament',
@@ -21,7 +22,8 @@ export class TournamentPage {
               private loadingCtrl: LoadingController,
               private toastCtrl: ToastController,
               private admob: AdMobFree,
-              private plt: Platform) {
+              private plt: Platform,
+              private storage: Storage) {
     this.standingsType = "current";
 
     let standings = [{
@@ -58,28 +60,23 @@ export class TournamentPage {
     if (!refresher) {
       this.loading = Utils.showLoader('Loading Current Standings...', this.loadingCtrl);
     }
-    const token = localStorage.getItem('token');
+    this.storage.get('token').then((token) => {
+      this.tournamentService.retrieveCurrentLeagueTable(token).then((result) => {
+        Utils.dismissLoaders(this.loading, refresher);
+        this.data = result;
 
-    this.tournamentService.retrieveCurrentLeagueTable(token).then((result) => {
-      if (!refresher) {
-        this.loading.dismiss();
-      } else {
-        refresher.complete();
-      }
-      this.data = result;
+        this.currentTables[0].standings = this.data.body.standings;
+        this.currentTables[1].standings = this.data.body.knockoutStandings;
+        this.currentTables[1].standings.forEach(m => this.convertDateToLocalTime(m));
 
-      this.currentTables[0].standings = this.data.body.standings;
-      this.currentTables[1].standings = this.data.body.knockoutStandings;
-      this.currentTables[1].standings.forEach(m => this.convertDateToLocalTime(m));
-
-      let token = this.data.headers.get('X-Auth-Token');
-      localStorage.setItem('token', token);
+        let token = this.data.headers.get('X-Auth-Token');
+        this.storage.set('token', token);
+      }, (err) => {
+        Utils.dismissLoaders(this.loading, refresher);
+        Utils.presentToast("Error loading standings", this.toastCtrl);
+      });
     }, (err) => {
-      if (!refresher) {
-        this.loading.dismiss();
-      } else {
-        refresher.complete();
-      }
+      Utils.dismissLoaders(this.loading, refresher);
       Utils.presentToast("Error loading standings", this.toastCtrl);
     });
   }
@@ -88,30 +85,29 @@ export class TournamentPage {
     if (!refresher) {
       this.loading = Utils.showLoader('Loading Predicted Standings...', this.loadingCtrl);
     }
-    const token = localStorage.getItem('token');
-    const userId = localStorage.getItem('userId');
+    this.storage.get('token').then((token) => {
+      this.storage.get('userId').then((userId) => {
+        this.tournamentService.retrievePredictedLeagueTable(token, userId).then((result) => {
+          Utils.dismissLoaders(this.loading, refresher);
+          this.data = result;
 
-    this.tournamentService.retrievePredictedLeagueTable(token, userId).then((result) => {
-      if (!refresher) {
-        this.loading.dismiss();
-      } else {
-        refresher.complete();
-      }
-      this.data = result;
+          this.predictedTables[0].standings = this.data.body.standings;
+          this.predictedTables[1].standings = this.data.body.knockoutStandings;
+          this.currentTables[1].standings.forEach(m => this.convertDateToLocalTime(m));
+          MatchUtils.refreshData = false;
 
-      this.predictedTables[0].standings = this.data.body.standings;
-      this.predictedTables[1].standings = this.data.body.knockoutStandings;
-      this.currentTables[1].standings.forEach(m => this.convertDateToLocalTime(m));
-      MatchUtils.refreshData = false;
-
-      let token = this.data.headers.get('X-Auth-Token');
-      localStorage.setItem('token', token);
+          let token = this.data.headers.get('X-Auth-Token');
+          this.storage.set('token', token);
+        }, (err) => {
+          Utils.dismissLoaders(this.loading, refresher);
+          Utils.presentToast("Error loading standings", this.toastCtrl);
+        });
+      }, (err) => {
+        Utils.dismissLoaders(this.loading, refresher);
+        Utils.presentToast("Error loading standings", this.toastCtrl);
+      });
     }, (err) => {
-      if (!refresher) {
-        this.loading.dismiss();
-      } else {
-        refresher.complete();
-      }
+      Utils.dismissLoaders(this.loading, refresher);
       Utils.presentToast("Error loading standings", this.toastCtrl);
     });
   }

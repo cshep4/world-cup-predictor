@@ -25,6 +25,7 @@ import {Clipboard} from "@ionic-native/clipboard";
 import {AccountService} from "../providers/account-service";
 import {Keyboard} from "ionic-native";
 import {WheelSelector} from "@ionic-native/wheel-selector";
+import {IonicStorageModule} from "@ionic/storage";
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import {WheelSelector} from "@ionic-native/wheel-selector";
       autoFocusAssist: false
     }),
     BrowserModule,
-    HttpClientModule
+    HttpClientModule,
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [

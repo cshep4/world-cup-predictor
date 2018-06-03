@@ -83,6 +83,14 @@ export default class Utils {
       return 1;
     return 0;
   }
+
+  static dismissLoaders(loading, refresher?) {
+    if (!refresher) {
+      loading.dismiss();
+    } else {
+      refresher.complete();
+    }
+  }
 }
 
 // export const apiUrl = 'http://localhost:8080/';

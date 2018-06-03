@@ -41,12 +41,10 @@ export class AuthService {
       });
   }
 
-  logout(){
+  logout(token){
       return new Promise((resolve, reject) => {
-            const headers = new HttpHeaders().set('X-Auth-Token', localStorage.getItem('token'));
+            const headers = new HttpHeaders().set('X-Auth-Token', token);
             const options: RequestOptions = { headers: headers, observe: "response" };
-
-            localStorage.clear();
             this.http.post(apiUrl+'users/logout', {}, options)
               .subscribe(res => {
                   resolve(res);

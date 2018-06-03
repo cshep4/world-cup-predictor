@@ -5,6 +5,7 @@ import {TabsPage} from '../tabs/tabs';
 import {RegisterPage} from '../register/register';
 import Utils from "../../utils/utils";
 import {AdMobFree} from "@ionic-native/admob-free";
+import {Storage} from "@ionic/storage";
 
 @Component({
   selector: 'page-login',
@@ -21,7 +22,8 @@ export class LoginPage {
               private loadingCtrl: LoadingController,
               private toastCtrl: ToastController,
               private admob: AdMobFree,
-              private plt: Platform) {
+              private plt: Platform,
+              private storage: Storage) {
     Utils.showBanner(this.plt, this.admob);
   }
 
@@ -32,13 +34,12 @@ export class LoginPage {
 
           this.data = result;
           const token = this.data.headers.get('X-Auth-Token');
-          localStorage.setItem('token', token);
+          this.storage.set('token', token);
           const userId = this.data.headers.get('userId');
-          localStorage.setItem('userId', userId);
+          this.storage.set('userId', userId);
 
           this.navCtrl.insert(0,TabsPage);
           this.navCtrl.popToRoot();
-          // this.navCtrl.setRoot(TabsPage);
       }, (err) => {
           this.loading.dismiss();
           Utils.presentToast("Error logging in", this.toastCtrl);

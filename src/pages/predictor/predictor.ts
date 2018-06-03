@@ -9,6 +9,7 @@ import {Prediction} from "../../models/Prediction";
 import {Match} from "../../models/Match";
 import {AdMobFree} from "@ionic-native/admob-free";
 import {WheelSelector} from "@ionic-native/wheel-selector";
+import {Storage} from '@ionic/storage';
 
 @Component({
   selector: 'page-predictor',
@@ -28,7 +29,8 @@ export class PredictorPage {
               private popoverCtrl: PopoverController,
               private admob: AdMobFree,
               private plt: Platform,
-              private selector: WheelSelector) {
+              private selector: WheelSelector,
+              private storage: Storage) {
     Utils.showBanner(this.plt, this.admob);
     if (!this.matches) {
       this.loadMatchesWithPredictions();
@@ -81,38 +83,38 @@ export class PredictorPage {
       if (!refresher) {
           this.loading = Utils.showLoader('Loading Predictions...', this.loadingCtrl);
       }
-      const token = localStorage.getItem('token');
-      const userId = localStorage.getItem('userId');
-      this.matchService.retrievePredictedMatches(token, userId).then((result) => {
-          if (!refresher) {
-              this.loading.dismiss();
-          } else {
-              refresher.complete();
-          }
-          this.data = result;
-          this.matches = this.data.body.map(m => <Match>({
-              id : m.id,
-              predictionId : m.predictionId,
-              played : m.played,
-              group : m.group,
-              dateTime : m.dateTime,
-              matchday : m.matchday,
-              hTeam : m.hteam,
-              aTeam : m.ateam,
-              hGoals : m.hgoals,
-              aGoals : m.agoals
-          }));
-          this.matches.sort(MatchUtils.compareDate);
-          this.convertDateToLocalTime();
-          let token = this.data.headers.get('X-Auth-Token');
-          localStorage.setItem('token', token);
-      }, (err) => {
-          if (!refresher) {
-            this.loading.dismiss();
-          } else {
-            refresher.complete();
-          }
+      this.storage.get('token').then((token) => {
+        this.storage.get('userId').then((userId) => {
+          this.matchService.retrievePredictedMatches(token, userId).then((result) => {
+            Utils.dismissLoaders(this.loading, refresher);
+            this.data = result;
+            this.matches = this.data.body.map(m => <Match>({
+              id: m.id,
+              predictionId: m.predictionId,
+              played: m.played,
+              group: m.group,
+              dateTime: m.dateTime,
+              matchday: m.matchday,
+              hTeam: m.hteam,
+              aTeam: m.ateam,
+              hGoals: m.hgoals,
+              aGoals: m.agoals
+            }));
+            this.matches.sort(MatchUtils.compareDate);
+            this.convertDateToLocalTime();
+            let token = this.data.headers.get('X-Auth-Token');
+            this.storage.set('token', token);
+          }, (err) => {
+            Utils.dismissLoaders(this.loading, refresher);
+            Utils.presentToast("Error loading predictions", this.toastCtrl);
+          });
+        }, (error) => {
+          Utils.dismissLoaders(this.loading, refresher);
           Utils.presentToast("Error loading predictions", this.toastCtrl);
+        });
+      }, (error) => {
+        Utils.dismissLoaders(this.loading, refresher);
+        Utils.presentToast("Error loading predictions", this.toastCtrl);
       });
   }
 
@@ -139,42 +141,48 @@ export class PredictorPage {
 
   save() {
       this.loading = Utils.showLoader('Saving Predictions...', this.loadingCtrl);
-      const userId = localStorage.getItem("userId");
+      this.storage.get('token').then((token) => {
+        this.storage.get('userId').then((userId) => {
+          this.predictions = this.matches
+            .filter(m => m.hGoals !== undefined && m.aGoals !== undefined)
+            .filter(m => m.hGoals !== null && m.aGoals !== null)
+            .filter(m => m.hGoals !== '' && m.aGoals !== '')
+            .filter(m => !isNaN(m.hGoals) && !isNaN(m.aGoals))
+            .map(m => <Prediction>({
+                id : m.predictionId,
+                hGoals: m.hGoals,
+                aGoals: m.aGoals,
+                userId: parseInt(userId),
+                matchId: m.id
+            }));
 
-      this.predictions = this.matches
-        .filter(m => m.hGoals !== undefined && m.aGoals !== undefined)
-        .filter(m => m.hGoals !== null && m.aGoals !== null)
-        .filter(m => m.hGoals !== '' && m.aGoals !== '')
-        .filter(m => !isNaN(m.hGoals) && !isNaN(m.aGoals))
-        .map(m => <Prediction>({
-            id : m.predictionId,
-            hGoals: m.hGoals,
-            aGoals: m.aGoals,
-            userId: parseInt(userId),
-            matchId: m.id
-        }));
+          this.matchService.savePredictions(token, this.predictions).then((result) => {
+              this.loading.dismiss();
+              Utils.presentToast("Predictions stored successfully!", this.toastCtrl);
+              MatchUtils.refreshData = true;
 
-      const token = localStorage.getItem('token');
+              this.data = result;
 
-      this.matchService.savePredictions(token, this.predictions).then((result) => {
-          this.loading.dismiss();
-          Utils.presentToast("Predictions stored successfully!", this.toastCtrl);
-          MatchUtils.refreshData = true;
+              for (let i = 0; i < this.matches.length; i++) {
+                if (this.hasPredictionBeenAdded(this.matches[i])) {
+                  let newPrediction = this.data.body.find(p => p.matchId == this.matches[i].id);
+                  this.matches[i].predictionId = newPrediction.id;
+                }
+              }
 
-          this.data = result;
-
-          for (let i = 0; i < this.matches.length; i++) {
-            if (this.hasPredictionBeenAdded(this.matches[i])) {
-              let newPrediction = this.data.body.find(p => p.matchId == this.matches[i].id);
-              this.matches[i].predictionId = newPrediction.id;
-            }
-          }
-
-          const token = this.data.headers.get('X-Auth-Token');
-          localStorage.setItem('token', token);
-      }, (err) => {
+              const token = this.data.headers.get('X-Auth-Token');
+              this.storage.set('token', token);
+          }, (err) => {
+              this.loading.dismiss();
+              Utils.presentToast("Error saving predictions, please try again", this.toastCtrl);
+          });
+        }, (error) => {
           this.loading.dismiss();
           Utils.presentToast("Error saving predictions, please try again", this.toastCtrl);
+        });
+      }, (error) => {
+        this.loading.dismiss();
+        Utils.presentToast("Error saving predictions, please try again", this.toastCtrl);
       });
   }
 
