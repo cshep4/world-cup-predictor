@@ -13,6 +13,14 @@
         <ion-spinner *ngIf="!score"></ion-spinner>
       </button>
     </ion-buttons>
+    <ion-segment [(ngModel)]="displayType">
+      <ion-segment-button value="scoring">
+        Scoring
+      </ion-segment-button>
+      <ion-segment-button value="rules">
+        Rules
+      </ion-segment-button>
+    </ion-segment>
   </ion-toolbar>
 </ion-header>
 
@@ -20,76 +28,112 @@
   <ion-refresher (ionRefresh)="loadScoreAndRank($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <h2 class="title-font">World Cup 2018 Predictor</h2>
-  <h4 class="subtitle subtitle-font">Scoring:</h4>
-  <b class="subtitle-font">Group Stage</b>
-  <ion-list class="grid">
-    <ion-row>
-      <ion-col col-2 align-self-center>
-        1 Pt.
-      </ion-col>
-      <ion-col col-10>
-        Correct amount of goals for a team. (e.g. prediction of 2-1, final score is 2-0, 1 point will be awarded. Prediction of 3-1, final score is 2-2, 0 points will be awarded.)
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col col-2 align-self-center>
-        3 Pts.
-      </ion-col>
-      <ion-col col-10>
-        Correct result, plus points for correct amount of goals (if any).
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col col-2 align-self-center>
-        3 Pts.
-      </ion-col>
-      <ion-col col-10>
-        Correct scoreline, plus points for a correct result and goals.
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col col-2 align-self-center>
-        5 Pts.
-      </ion-col>
-      <ion-col col-10>
-        Correct team position in a group.
-      </ion-col>
-    </ion-row>
-  </ion-list>
-  <b class="subtitle-font">Knockout Stage</b>
-  <ion-list class="grid">
-    <ion-row>
-      <ion-col col-2 align-self-center>
-        1 Pt.
-      </ion-col>
-      <ion-col col-10>
-        Correct amount of goals for a team. (e.g. prediction of 2-1, final score is 2-0, 1 point will be awarded. Prediction of 3-1, final score is 2-2, 0 points will be awarded.)
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col col-2 align-self-center>
-        3 Pts.
-      </ion-col>
-      <ion-col col-10>
-        Correct result, plus points for correct amount of goals (if any).
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col col-2 align-self-center>
-        3 Pts.
-      </ion-col>
-      <ion-col col-10>
-        Correct scoreline, plus points for a correct result and goals.
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col col-2 align-self-center>
-        20 Pts.
-      </ion-col>
-      <ion-col col-10>
-        Correct prediction of the winner.
-      </ion-col>
-    </ion-row>
-  </ion-list>
+
+  <div [ngSwitch]="displayType">
+    <ion-list *ngSwitchCase="'rules'">
+      <h2 class="title-font">World Cup Predictor 2018</h2>
+      <h4 class="subtitle subtitle-font">Rules:</h4>
+      <ion-list class="grid">
+        <ion-row>
+          <ion-col col-2 align-self-center>
+            <img src="assets/img/bullet.png" class="center">
+          </ion-col>
+          <ion-col col-10>
+            Predictions for each match can up added/updated any time before the match kicks off.
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-2 align-self-center>
+            <img src="assets/img/bullet.png" class="center">
+          </ion-col>
+          <ion-col col-10>
+            As the tournament progresses, the knockout matches will be populated with the correct teams, these predictions can also be made at any time up until each match kicks off.
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-2 align-self-center>
+            <img src="assets/img/bullet.png" class="center">
+          </ion-col>
+          <ion-col col-10>
+            Predictions can be changed as often as you wish. Once a match kicks off, the prediction for that game will be locked in and cannot be changed.
+          </ion-col>
+        </ion-row>
+      </ion-list>
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'scoring'">
+      <h2 class="title-font">World Cup Predictor 2018</h2>
+      <h4 class="subtitle subtitle-font">Scoring:</h4>
+      <b class="subtitle-font">Group Stage</b>
+      <ion-list class="grid">
+        <ion-row>
+          <ion-col col-2 align-self-center>
+            1 Pt.
+          </ion-col>
+          <ion-col col-10>
+            Correct amount of goals for a team. (e.g. prediction of 2-1, final score is 2-0, 1 point will be awarded. Prediction of 3-1, final score is 2-2, 0 points will be awarded.)
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-2 align-self-center>
+            3 Pts.
+          </ion-col>
+          <ion-col col-10>
+            Correct result, plus points for correct amount of goals (if any).
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-2 align-self-center>
+            3 Pts.
+          </ion-col>
+          <ion-col col-10>
+            Correct scoreline, plus points for a correct result and goals.
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-2 align-self-center>
+            5 Pts.
+          </ion-col>
+          <ion-col col-10>
+            Correct team position in a group.
+          </ion-col>
+        </ion-row>
+      </ion-list>
+      <b class="subtitle-font">Knockout Stage</b>
+      <ion-list class="grid">
+        <ion-row>
+          <ion-col col-2 align-self-center>
+            1 Pt.
+          </ion-col>
+          <ion-col col-10>
+            Correct amount of goals for a team. (e.g. prediction of 2-1, final score is 2-0, 1 point will be awarded. Prediction of 3-1, final score is 2-2, 0 points will be awarded.)
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-2 align-self-center>
+            3 Pts.
+          </ion-col>
+          <ion-col col-10>
+            Correct result, plus points for correct amount of goals (if any).
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-2 align-self-center>
+            3 Pts.
+          </ion-col>
+          <ion-col col-10>
+            Correct scoreline, plus points for a correct result and goals.
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-2 align-self-center>
+            20 Pts.
+          </ion-col>
+          <ion-col col-10>
+            Correct prediction of the winner.
+          </ion-col>
+        </ion-row>
+      </ion-list>
+    </ion-list>
+  </div>
 </ion-content>

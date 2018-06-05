@@ -17,6 +17,7 @@ export class TournamentPage {
   predictedTables: any[];
   loading: any;
   data: any;
+  overlayHidden: boolean = true;
 
   constructor(private tournamentService: TournamentService,
               private loadingCtrl: LoadingController,
@@ -42,6 +43,10 @@ export class TournamentPage {
 
   ionViewDidEnter() {
     this.getStandings();
+  }
+
+  toggleOverlay() {
+    this.overlayHidden = !this.overlayHidden;
   }
 
   getStandings(refresher?) {

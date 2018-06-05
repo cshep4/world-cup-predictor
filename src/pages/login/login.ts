@@ -6,6 +6,7 @@ import {RegisterPage} from '../register/register';
 import Utils from "../../utils/utils";
 import {AdMobFree} from "@ionic-native/admob-free";
 import {Storage} from "@ionic/storage";
+import {ResetPasswordPage} from "../resetpassword/resetpassword";
 
 @Component({
   selector: 'page-login',
@@ -48,6 +49,10 @@ export class LoginPage {
 
   register() {
       this.navCtrl.push(RegisterPage);
+  }
+
+  resetPassword() {
+    this.navCtrl.push(ResetPasswordPage);
   }
 
 }

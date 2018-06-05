@@ -18,7 +18,6 @@ page-home {
     padding: 0;
   }
 
-
   .text {
     font-size: 3vw;
   }
@@ -27,5 +26,13 @@ page-home {
     ion-spinner svg * {
       stroke: white !important;
     }
+  }
+
+  .center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 70%;
+    width: 70%;
   }
 }

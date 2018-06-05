@@ -22,6 +22,7 @@ export class PredictorPage {
   filterargs = {phase: "Group A"};
   phase = "Group A";
   predictions: [Prediction];
+  overlayHidden: boolean = true;
 
   constructor(private matchService: MatchService,
               private loadingCtrl: LoadingController,
@@ -39,6 +40,10 @@ export class PredictorPage {
 
   ionViewDidEnter() {
     this.selector.hideSelector();
+  }
+
+  toggleOverlay() {
+    this.overlayHidden = !this.overlayHidden;
   }
 
   selectGoals(match, teamName, isHome) {

@@ -54,6 +54,24 @@ export class AuthService {
       });
   }
 
+  resetPassword(email){
+    return new Promise((resolve, reject) => {
+      if (!UserUtils.isValidEmail(email)) {
+        reject(UserUtils.errorMessage);
+        return
+      }
+
+      const headers = new HttpHeaders().set("Content-Type", 'application/json');
+      const options: RequestOptions = { headers: headers, observe: "response" };
+      this.http.post(apiUrl+'users/sendResetPassword', email, options)
+        .subscribe(res => {
+          resolve(res);
+        }, (err) => {
+          reject("Error resetting password, please try again");
+        });
+    });
+  }
+
   setUsedToken(token) {
     return new Promise((resolve, reject) => {
       const body = token;

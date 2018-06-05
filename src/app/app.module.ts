@@ -26,6 +26,7 @@ import {AccountService} from "../providers/account-service";
 import {Keyboard} from "ionic-native";
 import {WheelSelector} from "@ionic-native/wheel-selector";
 import {IonicStorageModule} from "@ionic/storage";
+import {ResetPasswordPage} from "../pages/resetpassword/resetpassword";
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import {IonicStorageModule} from "@ionic/storage";
     GroupPopover,
     GroupFilter,
     StandingsAccordion,
+    ResetPasswordPage,
     LeaguePage
   ],
   imports: [
@@ -65,6 +67,7 @@ import {IonicStorageModule} from "@ionic/storage";
     LoginPage,
     RegisterPage,
     GroupPopover,
+    ResetPasswordPage,
     LeaguePage
   ],
   providers: [

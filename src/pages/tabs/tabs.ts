@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NavController, ToastController} from 'ionic-angular';
+import {NavController} from 'ionic-angular';
 import {HomePage} from '../home/home';
 import {PredictorPage} from '../predictor/predictor';
 import {StandingsPage} from '../standings/standings';
@@ -20,22 +20,33 @@ export class TabsPage {
   tabs: any;
 
   constructor(private navCtrl: NavController,
-              private storage: Storage,
-              private toastCtrl: ToastController) {
-    // code to migrate from old storage to new
+              private storage: Storage) {
+    storage.get('token').then((token) => {
+      if (!token) {
+        this.setRootIfNotUsingOldSystem();
+      }
+    }, (error) => {
+      this.setRootIfNotUsingOldSystem();
+    });
+  }
+
+  private setRootIfNotUsingOldSystem() {
+    let isOldSystem = false;
     if(localStorage.getItem("token")) {
       const token = localStorage.getItem("token");
-      storage.set("token", token);
+      this.storage.set("token", token);
       localStorage.removeItem("token");
+      isOldSystem = true;
     }
     if(localStorage.getItem("userId")) {
       const userId = localStorage.getItem("userId");
-      storage.set("userId", userId);
+      this.storage.set("userId", userId);
       localStorage.removeItem("userId");
+      isOldSystem = true;
     }
 
-    storage.get('token').then((token) => {}, (error) => {
+    if (!isOldSystem) {
       this.navCtrl.setRoot(LoginPage);
-    });
+    }
   }
 }

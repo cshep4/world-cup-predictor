@@ -24,6 +24,20 @@ export default class UserUtils {
       return true;
   }
 
+  static isValidEmail(email) {
+    if (email == "") {
+      this.errorMessage = "Please enter your email";
+      return false;
+    }
+    const emailPattern = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+    if (!emailPattern.test(email)) {
+      this.errorMessage = "Email is not valid, please try again";
+      return false
+    }
+
+    return true;
+  }
+
   static isValidUpdateUserDetails(data) {
     if (data.firstName == "" || data.surname == "" || data.email == "") {
       this.errorMessage = "All fields must be entered";

@@ -46,4 +46,47 @@
         </ion-row>
       </ion-list>
   </ion-card>
+
+  <ion-fab bottom right>
+    <button ion-fab (click)="toggleOverlay()">
+      <ion-icon ios="md-help" md="md-help"></ion-icon>
+    </button>
+  </ion-fab>
+
+  <div class="my-overlay v-center" padding [hidden]="overlayHidden">
+    <ion-list class="grid white-text">
+      <ion-row>
+        <ion-col col-1 align-self-center>
+          -
+        </ion-col>
+        <ion-col col-11>
+          Tap on the box next to the team name to change the score.
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col col-1 align-self-center>
+          -
+        </ion-col>
+        <ion-col col-11>
+          Tap the "Phase <ion-icon name="arrow-down"></ion-icon>" button to change between groups/knockout rounds
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col col-1 align-self-center>
+          -
+        </ion-col>
+        <ion-col col-11>
+          Tap the <ion-icon name="checkmark"></ion-icon> to save predictions
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col col-1 align-self-center>
+          -
+        </ion-col>
+        <ion-col col-11>
+          Predictions can be added/updated for each match (group and knockout) at any time up until the match kicks off.
+        </ion-col>
+      </ion-row>
+    </ion-list>
+  </div>
 </ion-content>

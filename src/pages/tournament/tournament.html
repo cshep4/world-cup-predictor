@@ -30,4 +30,31 @@
       <standings-accordion [tables]="predictedTables"></standings-accordion>
     </ion-list>
   </div>
+
+  <ion-fab bottom right>
+    <button ion-fab (click)="toggleOverlay()">
+      <ion-icon ios="md-help" md="md-help"></ion-icon>
+    </button>
+  </ion-fab>
+
+  <div class="my-overlay v-center" padding [hidden]="overlayHidden">
+    <ion-list class="grid white-text">
+      <ion-row>
+        <ion-col col-1 align-self-center>
+          -
+        </ion-col>
+        <ion-col col-11>
+          Select the Real tab to view the actual tournament standings
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col col-1 align-self-center>
+          -
+        </ion-col>
+        <ion-col col-11>
+          Select the Predicted tab to view the tournament standings based on your own predictions
+        </ion-col>
+      </ion-row>
+    </ion-list>
+  </div>
 </ion-content>

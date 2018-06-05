@@ -11,6 +11,7 @@ import {Storage} from '@ionic/storage';
   templateUrl: 'home.html'
 })
 export class HomePage {
+  displayType;
   data: any;
   score: string;
   rank: string;
@@ -22,6 +23,7 @@ export class HomePage {
               private scoreService: ScoreService,
               private storage: Storage) {
     Utils.showBanner(this.plt, this.admob);
+    this.displayType = "scoring";
 
     if (MatchUtils.refreshData) {
       this.score = null;
