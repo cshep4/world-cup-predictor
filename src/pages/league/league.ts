@@ -1,11 +1,19 @@
-import {AlertController, LoadingController, NavController, NavParams, Platform, ToastController} from "ionic-angular";
+import {
+  AlertController,
+  Content,
+  LoadingController,
+  NavController,
+  NavParams,
+  Platform,
+  ToastController
+} from "ionic-angular";
 import {AdMobFree} from "@ionic-native/admob-free";
-import {Component} from "@angular/core";
+import {Component, ViewChild} from "@angular/core";
 import Utils from "../../utils/utils";
 import {StandingsService} from "../../providers/standings-service";
 import {LeagueTablePlayer} from "../../models/LeagueTablePlayer";
 import {Clipboard} from "@ionic-native/clipboard";
-import {Storage} from "@ionic/storage";
+import {StorageUtils} from "../../utils/storage-utils";
 
 @Component({
   selector: 'page-league',
@@ -20,6 +28,8 @@ export class LeaguePage {
   currentIndex = 0;
   numberToBeDisplayed = 60;
   userId: number;
+  scrolling: boolean = false;
+  @ViewChild(Content) content: Content;
 
   constructor(private navCtrl: NavController,
               private loadingCtrl: LoadingController,
@@ -30,21 +40,13 @@ export class LeaguePage {
               private standingsService: StandingsService,
               private alertCtrl: AlertController,
               private clipboard: Clipboard,
-              private storage: Storage) {
+              private storage: StorageUtils) {
     this.leagueOverview = this.params.get('league');
     this.storage.get('userId').then((userId) => {
       this.userId = Number(userId);
     });
     Utils.showBanner(this.plt, this.admob);
     this.loadLeagueTable();
-  }
-
-  private copyPin() {
-    this.clipboard.copy(this.leagueOverview.pin.toString()).then(result => {
-      Utils.presentToast("Pin copied!", this.toastCtrl);
-    }).catch( err => {
-      Utils.presentToast("Error copying pin", this.toastCtrl);
-    });
   }
 
   private loadLeagueTable(refresher?) {
@@ -95,11 +97,65 @@ export class LeaguePage {
       }, 500);
   }
 
-  private showLeaveLeaguePrompt() {
+  private copyPin() {
+    this.clipboard.copy(this.leagueOverview.pin.toString()).then(result => {
+      Utils.presentToast("Pin copied!", this.toastCtrl);
+    }).catch( err => {
+      Utils.presentToast("Error copying pin", this.toastCtrl);
+    });
+  }
+
+  private showRemoveUserPrompt() {
+    this.storage.get('userId').then(userId => {
+      let alert = this.alertCtrl.create();
+      alert.setTitle('Remove User');
+
+      let isChecked = true;
+      this.leagueTable.forEach(user => {
+        let id;
+        if (user.id != userId) {
+          id = user.id
+        } else {
+          id = null;
+        }
+
+        alert.addInput({
+          type: 'radio',
+          label: user.firstName + " " + user.surname,
+          value: id,
+          checked: isChecked
+        });
+
+        isChecked = false;
+      });
+
+      alert.addButton('Cancel');
+      alert.addButton({
+        text: 'OK',
+        handler: data => {
+          this.showLeaveLeaguePrompt(data);
+        }
+      });
+      alert.present();
+    });
+  }
+
+  private showLeaveLeaguePrompt(userId?) {
     const name = this.leagueOverview.leagueName;
+
+    let message;
+    let title;
+    if (userId) {
+      title = 'Remove User?';
+      message = "Are you sure you want to remove this user?";
+    } else {
+      title = 'Leave ' + name + '?';
+      message = "Are you sure you want to leave this league?";
+    }
+
     const prompt = this.alertCtrl.create({
-      title: 'Leave ' + name + '?',
-      message: "Are you sure you want to leave this league?",
+      title: title,
+      message: message,
       buttons: [
         {
           text: 'Cancel'
@@ -107,7 +163,11 @@ export class LeaguePage {
         {
           text: 'Confirm',
           handler: data => {
-            this.leaveLeague();
+            if (userId) {
+              this.removeUser(userId)
+            } else {
+              this.leaveLeague();
+            }
           }
         }
       ]
@@ -127,8 +187,8 @@ export class LeaguePage {
           this.data = result;
 
           Utils.presentToast("League left!", this.toastCtrl);
-          this.navCtrl.popToRoot();
           Utils.refreshLeagues = true;
+          this.navCtrl.popToRoot();
 
           let token = this.data.headers.get('X-Auth-Token');
           this.storage.set('token', token);
@@ -144,5 +204,65 @@ export class LeaguePage {
       this.loading.dismiss();
       Utils.presentToast("Error leaving league", this.toastCtrl);
     });
+  }
+
+  private removeUser(userId) {
+    this.loading = Utils.showLoader('Removing User...', this.loadingCtrl);
+    this.storage.get('token').then((token) => {
+      const pin = this.leagueOverview.pin;
+
+      this.standingsService.leaveLeague(token, userId, pin).then((result) => {
+        this.loading.dismiss();
+        this.data = result;
+
+        Utils.presentToast("User Removed!", this.toastCtrl);
+
+        this.leagueTable = this.leagueTable.filter(user => user.id !== userId);
+        this.displayedTable = this.displayedTable.filter(user => user.id !== userId);
+
+        let token = this.data.headers.get('X-Auth-Token');
+        this.storage.set('token', token);
+      }, (err) => {
+        this.loading.dismiss();
+        Utils.presentToast("Error removing user", this.toastCtrl);
+      });
+    }, (error) => {
+      this.loading.dismiss();
+      Utils.presentToast("Error removing user", this.toastCtrl);
+    });
+  }
+
+  private jumpToUserPosition() {
+    this.storage.get('userId').then((userId) => {
+      const position = this.leagueTable.map(e => e.id).indexOf(Number(userId));
+      const id = "user" + userId;
+
+      if (position > this.currentIndex) {
+        this.displayedTable = this.displayedTable.concat(this.leagueTable.slice(this.currentIndex, position + 1));
+        this.currentIndex = this.displayedTable.length;
+        let that = this;
+        setTimeout(function() {that.scroll(id) }, 100);
+      } else {
+        this.scroll(id);
+      }
+
+    });
+  }
+
+  private scroll(element) {
+    if (document.getElementById(element)) {
+      (<HTMLElement>document.getElementById("scrollButton")).setAttribute("disabled","disabled");
+
+      const yOffset = (<HTMLElement>document.getElementById(element)).offsetTop;
+      this.content.scrollTo(0, yOffset, 500).then(() => {
+        this.enableScrollButton();
+      }, () => {
+        this.enableScrollButton();
+      });
+    }
+  }
+
+  private enableScrollButton() {
+    (<HTMLElement>document.getElementById("scrollButton")).removeAttribute("disabled");
   }
 }

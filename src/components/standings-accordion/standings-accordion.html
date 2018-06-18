@@ -98,13 +98,13 @@
                   {{ item.hteam  || "TBC" }}
                 </ion-col>
                 <ion-col col-2 class="h-center">
-                  {{ item.hgoals  || "" }}
+                  <span *ngIf='item.hgoals !== null'  > {{ item.hgoals }}</span>
                 </ion-col>
                 <ion-col col-2 class="h-center">
                   Vs.
                 </ion-col>
                 <ion-col class="h-center" col-2>
-                  {{ item.agoals  || "" }}
+                  <span *ngIf='item.agoals !== null'  > {{ item.agoals }}</span>
                 </ion-col>
                 <ion-col col-3 class="h-center away-team">
                   {{ item.ateam  || "TBC" }}

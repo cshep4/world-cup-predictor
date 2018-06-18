@@ -28,7 +28,7 @@
 
 
     <!-- Table data -->
-    <ion-row *ngFor="let item of displayedTable; let k = index" detail-none class="child-item v-center" text-wrap>
+    <ion-row *ngFor="let item of displayedTable; let k = index" detail-none class="child-item v-center" [attr.id]="'user' + item.id" text-wrap>
       <ion-col class="center-text" col-2 [ngStyle]="{'color': userId == item.id ? '#af3434' : 'black'}">
         {{ k + 1 }}
       </ion-col>
@@ -50,16 +50,26 @@
       <ion-icon name="arrow-dropup"></ion-icon>
     </button>
     <ion-fab-list side="top">
-      <button ion-fab color="dark-grey" (click)="showLeaveLeaguePrompt()">
-        <ion-icon name="log-out"></ion-icon>
-        <ion-label>Leave League</ion-label>
-      </button>
       <button ion-fab color="dark-grey" (click)="copyPin()">
         <ion-icon name="copy"></ion-icon>
         <ion-label>Copy Pin</ion-label>
       </button>
+      <button ion-fab color="dark-grey" (click)="showRemoveUserPrompt()">
+        <ion-icon name="people"></ion-icon>
+        <ion-label>Remove User</ion-label>
+      </button>
+      <button ion-fab color="dark-grey" (click)="showLeaveLeaguePrompt()">
+        <ion-icon name="log-out"></ion-icon>
+        <ion-label>Leave League</ion-label>
+      </button>
     </ion-fab-list>
 
+  </ion-fab>
+
+  <ion-fab *ngIf="!leagueOverview.pin" bottom right>
+    <button ion-fab (click)="jumpToUserPosition()" id="scrollButton">
+      <ion-icon name="contract"></ion-icon>
+    </button>
   </ion-fab>
 
   <ion-infinite-scroll (ionInfinite)="doInfinite($event)" threshold="50px">
