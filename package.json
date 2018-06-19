@@ -21,23 +21,28 @@
         "@ionic-native/admob-free": "^4.7.0",
         "@ionic-native/clipboard": "^4.7.0",
         "@ionic-native/core": "^4.7.0",
+        "@ionic-native/native-storage": "^4.7.0",
         "@ionic-native/wheel-selector": "^4.7.0",
         "@ionic/storage": "2.1.3",
         "android-versions": "^1.3.0",
         "angular2-number-picker": "^0.8.8",
         "cordova-admob-sdk": "^0.17.0",
         "cordova-android": "7.0.0",
+        "cordova-android-support-gradle-release": "^1.4.2",
         "cordova-clipboard": "^1.2.1",
-        "cordova-ios": "^4.4.0",
+        "cordova-ios": "4.4.0",
         "cordova-plugin-admob-free": "^0.15.0",
         "cordova-plugin-console": "^1.0.5",
+        "cordova-plugin-crosswalk-webview": "~2.4.0",
         "cordova-plugin-device": "^1.1.4",
-        "cordova-plugin-ionic-keyboard": "^2.1.0",
+        "cordova-plugin-ionic-keyboard": "~2.0.5",
+        "cordova-plugin-nativestorage": "^2.3.1",
         "cordova-plugin-splashscreen": "^4.0.3",
         "cordova-plugin-statusbar": "git+https://github.com/apache/cordova-plugin-statusbar.git",
         "cordova-plugin-whitelist": "^1.3.1",
         "cordova-promise-polyfill": "0.0.2",
         "cordova-wheel-selector-plugin": "^1.1.1",
+        "font-awesome": "^4.7.0",
         "ionic-angular": "^3.9.2",
         "ionic-native": "2.9.0",
         "ionic-plugin-keyboard": "^2.2.1",
@@ -66,7 +71,7 @@
             "locator": "ios"
         }
     ],
-    "description": "World Cup 2018 Predictor App",
+    "description": "World Cup Predictor App",
     "cordova": {
         "plugins": {
             "cordova-plugin-console": {},
@@ -80,11 +85,17 @@
             "cordova-wheel-selector-plugin": {},
             "cordova-android-support-gradle-release": {
                 "ANDROID_SUPPORT_VERSION": "27.0.0"
-            }
+            },
+            "cordova-plugin-crosswalk-webview": {},
+            "cordova-plugin-ionic-keyboard": {},
+            "cordova-plugin-nativestorage": {}
         },
         "platforms": [
-            "ios",
-            "android"
+            "android",
+            "ios"
         ]
+    },
+    "config": {
+        "ionic_copy": "./scripts/copy-custom-libs.js"
     }
 }

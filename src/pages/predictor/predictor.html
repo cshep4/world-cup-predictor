@@ -28,19 +28,21 @@
           </ion-col>
         </ion-row>
         <ion-row  text-center class="v-center">
-          <ion-col col-3 class="h-center team" (click)="selectGoals(item, item.hTeam, true)">
+          <ion-col col-3 class="h-center team" (tap)="selectGoals(item, item.hTeam, true)">
+            <img *ngIf="item.hTeam" src="assets/img/{{item.hTeam}}.png" class="flag" align="top">
             {{ item.hTeam  || "TBC" }}
           </ion-col>
-          <ion-col col-2 class="h-center score-input" (click)="selectGoals(item, item.hTeam, true)">
+          <ion-col col-2 class="h-center score-input" (tap)="selectGoals(item, item.hTeam, true)">
             <input [disabled]="hasDatePassed(item.dateTime)" readonly class="h-center" type="number" min="0" max="99" name="hg{{item.id}}" [(ngModel)]="item.hGoals">
           </ion-col>
           <ion-col col-2 class="h-center">
             Vs.
           </ion-col>
-          <ion-col col-2 class="h-center score-input" (click)="selectGoals(item, item.aTeam, false)">
+          <ion-col col-2 class="h-center score-input" (tap)="selectGoals(item, item.aTeam, false)">
             <input [disabled]="hasDatePassed(item.dateTime)" readonly class="h-center" type="number" min="0" max="99" name="ag{{item.id}}" [(ngModel)]="item.aGoals">
           </ion-col>
-          <ion-col col-3 class="h-center team" (click)="selectGoals(item, item.aTeam, false)">
+          <ion-col col-3 class="h-center team" (tap)="selectGoals(item, item.aTeam, false)">
+            <img *ngIf="item.aTeam" src="assets/img/{{item.aTeam}}.png" class="flag" align="top">
             {{ item.aTeam  || "TBC" }}
           </ion-col>
         </ion-row>

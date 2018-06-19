@@ -18,30 +18,40 @@
       <ion-col class="center-text" col-4>
         <strong>Player</strong>
       </ion-col>
-      <ion-col class="center-text" col-4>
+      <ion-col class="center-text" col-3>
         <strong>Predicted Winner</strong>
       </ion-col>
       <ion-col class="center-text" col-2>
         <strong>Pts.</strong>
       </ion-col>
+      <ion-col class="center-text" col-1>
+      </ion-col>
     </ion-row>
 
 
     <!-- Table data -->
-    <ion-row *ngFor="let item of displayedTable; let k = index" detail-none class="child-item v-center" [attr.id]="'user' + item.id" text-wrap>
-      <ion-col class="center-text" col-2 [ngStyle]="{'color': userId == item.id ? '#af3434' : 'black'}">
+    <ion-row *ngFor="let item of displayedTable; let k = index"
+             detail-none
+             class="child-item v-center"
+             [attr.id]="'user' + item.id"
+             text-wrap>
+      <ion-col class="center-text" col-2 [ngStyle]="{'color': userId == item.id ? '#af3434' : 'black'}" (tap)="openPredictionSummary(item.firstName, item.id, item.score)">
         {{ k + 1 }}
       </ion-col>
-      <ion-col class="center-text" col-4 [ngStyle]="{'color': userId == item.id ? '#af3434' : 'black'}">
+      <ion-col class="center-text" col-4 [ngStyle]="{'color': userId == item.id ? '#af3434' : 'black'}" (tap)="openPredictionSummary(item.firstName, item.id, item.score)">
         {{ item.firstName }} {{ item.surname }}
       </ion-col>
-      <ion-col class="center-text" col-4 [ngStyle]="{'color': userId == item.id ? '#af3434' : 'black'}">
+      <ion-col class="center-text" col-3 [ngStyle]="{'color': userId == item.id ? '#af3434' : 'black'}" (tap)="openPredictionSummary(item.firstName, item.id, item.score)">
         {{ item.predictedWinner }}
       </ion-col>
-      <ion-col class="center-text" col-2 [ngStyle]="{'color': userId == item.id ? '#af3434' : 'black'}">
+      <ion-col class="center-text" col-2 [ngStyle]="{'color': userId == item.id ? '#af3434' : 'black'}" (tap)="openPredictionSummary(item.firstName, item.id, item.score)">
         {{ item.score }}
       </ion-col>
-
+      <ion-col col-1>
+        <button class="button-size" ion-button block clear (click)="openPredictionSummary(item.firstName, item.id, item.score)">
+          <i class="fa fa-angle-right"></i>
+        </button>
+      </ion-col>
     </ion-row>
   </ion-list>
 
@@ -57,6 +67,10 @@
       <button ion-fab color="dark-grey" (click)="showRemoveUserPrompt()">
         <ion-icon name="people"></ion-icon>
         <ion-label>Remove User</ion-label>
+      </button>
+      <button ion-fab color="dark-grey" (click)="showChangeNamePrompt()">
+        <i class="fa fa-edit"></i>
+        <ion-label>Rename League</ion-label>
       </button>
       <button ion-fab color="dark-grey" (click)="showLeaveLeaguePrompt()">
         <ion-icon name="log-out"></ion-icon>

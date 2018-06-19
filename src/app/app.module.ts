@@ -27,6 +27,10 @@ import {Keyboard} from "ionic-native";
 import {WheelSelector} from "@ionic-native/wheel-selector";
 import {IonicStorageModule} from "@ionic/storage";
 import {ResetPasswordPage} from "../pages/resetpassword/resetpassword";
+import {NativeStorage} from "@ionic-native/native-storage";
+import {StorageUtils} from "../utils/storage-utils";
+import {PredictionSummaryPage} from "../pages/predictionsummary/prediction-summary";
+import {PredictionsAccordion} from "../components/predictions-accordion/predictions-accordion";
 
 @NgModule({
   declarations: [
@@ -43,7 +47,9 @@ import {ResetPasswordPage} from "../pages/resetpassword/resetpassword";
     GroupFilter,
     StandingsAccordion,
     ResetPasswordPage,
-    LeaguePage
+    LeaguePage,
+    PredictionSummaryPage,
+    PredictionsAccordion
   ],
   imports: [
     IonicModule.forRoot(MyApp, {
@@ -68,7 +74,8 @@ import {ResetPasswordPage} from "../pages/resetpassword/resetpassword";
     RegisterPage,
     GroupPopover,
     ResetPasswordPage,
-    LeaguePage
+    LeaguePage,
+    PredictionSummaryPage
   ],
   providers: [
     {provide: ErrorHandler, useClass: IonicErrorHandler},
@@ -81,6 +88,8 @@ import {ResetPasswordPage} from "../pages/resetpassword/resetpassword";
     AccountService,
     Clipboard,
     Keyboard,
-    WheelSelector]
+    WheelSelector,
+    NativeStorage,
+    StorageUtils]
 })
 export class AppModule {}

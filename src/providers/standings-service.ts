@@ -18,7 +18,6 @@ export class StandingsService {
       const url = apiUrl + 'standings/userLeagues/' + id;
 
       this.http.get(url, options).subscribe(res => {
-        this.authService.setUsedToken(token).then((result) => {}, (err) => {});
         resolve(res);
       }, (err) => {
         reject(err);
@@ -40,7 +39,6 @@ export class StandingsService {
       };
 
       this.http.post(url, body, options).subscribe(res => {
-        this.authService.setUsedToken(token).then((result) => {}, (err) => {});
         resolve(res);
       }, (err) => {
         reject(err);
@@ -62,7 +60,6 @@ export class StandingsService {
       };
 
       this.http.post(url, body, options).subscribe(res => {
-        this.authService.setUsedToken(token).then((result) => {}, (err) => {});
         resolve(res);
       }, (err) => {
         reject(err);
@@ -84,7 +81,6 @@ export class StandingsService {
       };
 
       this.http.post(url, body, options).subscribe(res => {
-        this.authService.setUsedToken(token).then((result) => {}, (err) => {});
         resolve(res);
       }, (err) => {
         reject(err);
@@ -107,7 +103,27 @@ export class StandingsService {
       }
 
       this.http.get(url, options).subscribe(res => {
-        this.authService.setUsedToken(token).then((result) => {}, (err) => {});
+        resolve(res);
+      }, (err) => {
+        reject(err);
+      });
+    });
+  }
+
+  renameLeague(token, pin, name) {
+    return new Promise((resolve, reject) => {
+      const headers = new HttpHeaders()
+        .set("Content-Type", 'application/json')
+        .set("X-Auth-Token", token);
+      const options: RequestOptions = { headers: headers, observe: "response" };
+
+      const url = apiUrl + 'standings/rename';
+      const body = {
+        id: pin,
+        name: name
+      };
+
+      this.http.put(url, body, options).subscribe(res => {
         resolve(res);
       }, (err) => {
         reject(err);

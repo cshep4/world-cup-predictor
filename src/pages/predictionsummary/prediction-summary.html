@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-navbar no-border-bottom color="russia-red">
+    <ion-title>
+      {{ firstName }}'s Predictions
+    </ion-title>
+  </ion-navbar>
+
+  <ion-toolbar no-border-top>
+    <ion-title>Points: {{ score }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher (ionRefresh)="getPredictionSummary($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <predictions-accordion [predictions]="predictions"></predictions-accordion>
+</ion-content>

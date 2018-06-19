@@ -14,6 +14,7 @@ import {StandingsService} from "../../providers/standings-service";
 import {LeagueTablePlayer} from "../../models/LeagueTablePlayer";
 import {Clipboard} from "@ionic-native/clipboard";
 import {StorageUtils} from "../../utils/storage-utils";
+import {PredictionSummaryPage} from "../predictionsummary/prediction-summary";
 
 @Component({
   selector: 'page-league',
@@ -76,11 +77,11 @@ export class LeaguePage {
         this.storage.set('token', token);
       }, (err) => {
         Utils.dismissLoaders(this.loading, refresher);
-        Utils.presentToast("Error loading league table", this.toastCtrl);
+        Utils.presentToast("Error loading league table, please try again", this.toastCtrl);
       });
     }, (error) => {
       Utils.dismissLoaders(this.loading, refresher);
-      Utils.presentToast("Error loading league table", this.toastCtrl);
+      Utils.presentToast("Error loading league table, please try again", this.toastCtrl);
     });
   }
 
@@ -194,15 +195,15 @@ export class LeaguePage {
           this.storage.set('token', token);
         }, (err) => {
           this.loading.dismiss();
-          Utils.presentToast("Error leaving league", this.toastCtrl);
+          Utils.presentToast("Error leaving league, please try again", this.toastCtrl);
         });
       }, (error) => {
         this.loading.dismiss();
-        Utils.presentToast("Error leaving league", this.toastCtrl);
+        Utils.presentToast("Error leaving league, please try again", this.toastCtrl);
       });
     }, (error) => {
       this.loading.dismiss();
-      Utils.presentToast("Error leaving league", this.toastCtrl);
+      Utils.presentToast("Error leaving league, please try again", this.toastCtrl);
     });
   }
 
@@ -224,11 +225,64 @@ export class LeaguePage {
         this.storage.set('token', token);
       }, (err) => {
         this.loading.dismiss();
-        Utils.presentToast("Error removing user", this.toastCtrl);
+        Utils.presentToast("Error removing user, please try again", this.toastCtrl);
       });
     }, (error) => {
       this.loading.dismiss();
-      Utils.presentToast("Error removing user", this.toastCtrl);
+      Utils.presentToast("Error removing user, please try again", this.toastCtrl);
+    });
+  }
+
+  private showChangeNamePrompt() {
+    const prompt = this.alertCtrl.create({
+      title: 'Rename League',
+      message: "Enter a new name for the league",
+      inputs: [
+        {
+          name: 'name',
+          placeholder: 'League Name'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancel'
+        },
+        {
+          text: 'Rename',
+          handler: data => {
+            const name = data.name;
+            if(name == "") {
+              this.showChangeNamePrompt();
+            } else {
+              this.changeName(name);
+            }
+          }
+        }
+      ]
+    });
+    prompt.present();
+  }
+
+  private changeName(name) {
+    this.loading = Utils.showLoader('Renaming League...', this.loadingCtrl);
+
+    const pin = this.leagueOverview.pin;
+
+    this.storage.get('token').then((token) => {
+        this.standingsService.renameLeague(token, pin, name).then((result) => {
+          this.loading.dismiss();
+
+          Utils.presentToast("League renamed to "+ name + "!", this.toastCtrl);
+          this.leagueOverview.leagueName = name;
+
+          let token = this.data.headers.get('X-Auth-Token');
+          this.storage.set('token', token);
+        }, (err) => {
+          this.loading.dismiss();
+          Utils.presentToast("Error renaming league, please try again", this.toastCtrl);
+        });
+    }, (error) => {
+      Utils.presentToast("Error renaming league, please try again", this.toastCtrl);
     });
   }
 
@@ -264,5 +318,9 @@ export class LeaguePage {
 
   private enableScrollButton() {
     (<HTMLElement>document.getElementById("scrollButton")).removeAttribute("disabled");
+  }
+
+  private openPredictionSummary(firstName, userId, score) {
+    this.navCtrl.push(PredictionSummaryPage, { 'firstName': firstName, 'userId' : userId, 'score' : score });
   }
 }

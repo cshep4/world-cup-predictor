@@ -4,7 +4,7 @@ import {AdMobFree} from "@ionic-native/admob-free";
 import Utils from "../../utils/utils";
 import MatchUtils from "../../utils/match-utils";
 import {ScoreService} from "../../providers/score-service";
-import {Storage} from '@ionic/storage';
+import {StorageUtils} from "../../utils/storage-utils";
 
 @Component({
   selector: 'page-home',
@@ -21,7 +21,7 @@ export class HomePage {
               private admob: AdMobFree,
               private plt: Platform,
               private scoreService: ScoreService,
-              private storage: Storage) {
+              private storage: StorageUtils) {
     Utils.showBanner(this.plt, this.admob);
     this.displayType = "scoring";
 
@@ -31,7 +31,9 @@ export class HomePage {
     }
 
     if (!this.score || !this.rank) {
-      this.loadScoreAndRank();
+      this.plt.ready().then((readySource) => {
+        this.loadScoreAndRank();
+      });
     }
   }
 

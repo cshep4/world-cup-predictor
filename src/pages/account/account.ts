@@ -7,7 +7,7 @@ import Utils from "../../utils/utils";
 import {AdMobFree} from "@ionic-native/admob-free";
 import UserUtils from "../../utils/user-utils";
 import {AccountService} from "../../providers/account-service";
-import {Storage} from "@ionic/storage";
+import {StorageUtils} from "../../utils/storage-utils";
 
 @Component({
   selector: 'page-account',
@@ -31,7 +31,7 @@ export class AccountPage {
               private toastCtrl: ToastController,
               private admob: AdMobFree,
               private plt: Platform,
-              private storage: Storage) {
+              private storage: StorageUtils) {
     this.loadAccountDetails();
     Utils.showBanner(this.plt, this.admob);
   }
@@ -79,7 +79,7 @@ export class AccountPage {
 
     this.storage.get('token').then((token) => {
       this.storage.get('userId').then((userId) => {
-        this.accountData.id = parseInt(userId);
+        this.accountData.id = Number(userId);
 
         this.accountService.updateUserDetails(this.accountData, token).then((result) => {
           this.loading.dismiss();
@@ -109,7 +109,7 @@ export class AccountPage {
 
     this.storage.get('token').then((token) => {
       this.storage.get('userId').then((userId) => {
-        this.passwordData.id = parseInt(userId);
+        this.passwordData.id = Number(userId);
 
         this.accountService.updateUserPassword(this.passwordData, token).then((result) => {
           this.loading.dismiss();

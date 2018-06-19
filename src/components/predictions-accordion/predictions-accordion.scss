@@ -1,4 +1,4 @@
-standings-accordion {
+predictions-accordion {
   .v-center {
     display: flex;
     align-content: center;
@@ -10,14 +10,14 @@ standings-accordion {
     font-size: 3vw;
   }
 
-  .home-team {
+  .team {
     color: color($colors, russia-red);
     font-size: 3vw;
   }
 
-  .away-team {
-    color: color($colors, russia-red);
-    font-size: 3vw;
+  .grid {
+    margin: 0;
+    padding: 0;
   }
 
   .accordion-list {

@@ -86,7 +86,7 @@
         </button>
 
         <ion-list *ngIf="child.matches && child.open">
-          <ion-card *ngFor="let item of child.matches">
+          <ion-card *ngFor="let item of child.matches" class="match">
             <ion-list>
               <ion-row text-center>
                 <ion-col class="h-center" col-12>
@@ -95,6 +95,7 @@
               </ion-row>
               <ion-row  text-center class="v-center">
                 <ion-col col-3 class="h-center home-team">
+                  <img *ngIf="item.hteam" src="assets/img/{{item.hteam}}.png" class="flag" align="top">
                   {{ item.hteam  || "TBC" }}
                 </ion-col>
                 <ion-col col-2 class="h-center">
@@ -107,6 +108,7 @@
                   <span *ngIf='item.agoals !== null'  > {{ item.agoals }}</span>
                 </ion-col>
                 <ion-col col-3 class="h-center away-team">
+                  <img *ngIf="item.ateam" src="assets/img/{{item.ateam}}.png" class="flag" align="top">
                   {{ item.ateam  || "TBC" }}
                 </ion-col>
               </ion-row>

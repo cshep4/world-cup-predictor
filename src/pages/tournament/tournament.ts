@@ -5,7 +5,7 @@ import Utils from "../../utils/utils";
 import {TournamentService} from "../../providers/tournament-service";
 import MatchUtils from "../../utils/match-utils";
 import {AdMobFree} from "@ionic-native/admob-free";
-import {Storage} from "@ionic/storage";
+import {StorageUtils} from "../../utils/storage-utils";
 
 @Component({
   selector: 'page-tournament',
@@ -24,7 +24,7 @@ export class TournamentPage {
               private toastCtrl: ToastController,
               private admob: AdMobFree,
               private plt: Platform,
-              private storage: Storage) {
+              private storage: StorageUtils) {
     this.standingsType = "current";
 
     let standings = [{
@@ -72,7 +72,8 @@ export class TournamentPage {
 
         this.currentTables[0].standings = this.data.body.standings;
         this.currentTables[1].standings = this.data.body.knockoutStandings;
-        this.currentTables[1].standings.forEach(m => this.convertDateToLocalTime(m));
+        this.convertDateToLocalTime();
+        this.currentTables[1].standings.matches.sort(MatchUtils.compareDate);
 
         let token = this.data.headers.get('X-Auth-Token');
         this.storage.set('token', token);
@@ -98,7 +99,8 @@ export class TournamentPage {
 
           this.predictedTables[0].standings = this.data.body.standings;
           this.predictedTables[1].standings = this.data.body.knockoutStandings;
-          this.currentTables[1].standings.forEach(m => this.convertDateToLocalTime(m));
+          this.convertPredictionsDateToLocalTime();
+          this.predictedTables[1].standings.forEach(s => s.matches.sort(MatchUtils.compareDate));
           MatchUtils.refreshData = false;
 
           let token = this.data.headers.get('X-Auth-Token');
@@ -117,10 +119,29 @@ export class TournamentPage {
     });
   }
 
-  convertDateToLocalTime(round) {
-    for(let i=0; i<round.matches.length; i++){
-      const originalDate = round.matches[i].dateTime;
-      round.matches[i].dateTime = MatchUtils.convertUTCDateToLocalDate(new Date(originalDate));
+  private convertPredictionsDateToLocalTime() {
+    for(let i=0; i<this.predictedTables[1].standings.length; i++) {
+      for (let i = 0; i < this.predictedTables[1].standings[i].matches.length; i++) {
+        const originalDate = this.predictedTables[1].standings[i].matches[i].dateTime;
+        if (this.plt.is('ios')) {
+          this.predictedTables[1].standings[i].matches[i].dateTime = new Date(originalDate);
+        } else {
+          this.predictedTables[1].standings[i].matches[i].dateTime = MatchUtils.convertUTCDateToLocalDate(new Date(originalDate));
+        }
+      }
+    }
+  }
+
+  private convertDateToLocalTime() {
+    for(let i=0; i<this.currentTables[1].standings.length; i++) {
+      for (let j = 0; j < this.currentTables[1].standings[i].matches.length; j++) {
+        const originalDate = this.currentTables[1].standings[i].matches[j].dateTime;
+        if (this.plt.is('ios')) {
+          this.currentTables[1].standings[i].matches[j].dateTime = new Date(originalDate);
+        } else {
+          this.currentTables[1].standings[i].matches[j].dateTime = MatchUtils.convertUTCDateToLocalDate(new Date(originalDate));
+        }
+      }
     }
   }
 }

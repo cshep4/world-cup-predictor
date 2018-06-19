@@ -7,7 +7,7 @@ import {StandingsService} from "../../providers/standings-service";
 import {UserLeagueOverview} from "../../models/UserLeagueOverview";
 import {OverallLeagueOverview} from "../../models/OverallLeagueOverview";
 import {LeaguePage} from "../league/league";
-import {Storage} from "@ionic/storage";
+import {StorageUtils} from "../../utils/storage-utils";
 
 @Component({
   selector: 'page-standings',
@@ -26,9 +26,11 @@ export class StandingsPage {
               private admob: AdMobFree,
               private plt: Platform,
               private alertCtrl: AlertController,
-              private storage: Storage) {
+              private storage: StorageUtils) {
     Utils.showBanner(this.plt, this.admob);
+  }
 
+  ionViewDidEnter() {
     if (!this.leagues || Utils.refreshLeagues) {
       this.loadsUserLeagues();
     }

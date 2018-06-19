@@ -9,7 +9,7 @@ import {Prediction} from "../../models/Prediction";
 import {Match} from "../../models/Match";
 import {AdMobFree} from "@ionic-native/admob-free";
 import {WheelSelector} from "@ionic-native/wheel-selector";
-import {Storage} from '@ionic/storage';
+import {StorageUtils} from "../../utils/storage-utils";
 
 @Component({
   selector: 'page-predictor',
@@ -31,7 +31,7 @@ export class PredictorPage {
               private admob: AdMobFree,
               private plt: Platform,
               private selector: WheelSelector,
-              private storage: Storage) {
+              private storage: StorageUtils) {
     Utils.showBanner(this.plt, this.admob);
     if (!this.matches) {
       this.loadMatchesWithPredictions();
@@ -126,7 +126,11 @@ export class PredictorPage {
   convertDateToLocalTime() {
       for(let i=0; i<this.matches.length; i++){
           const originalDate = this.matches[i].dateTime;
-          this.matches[i].dateTime = MatchUtils.convertUTCDateToLocalDate(new Date(originalDate));
+          if (this.plt.is('ios')) {
+            this.matches[i].dateTime = new Date(originalDate);
+          } else {
+            this.matches[i].dateTime = MatchUtils.convertUTCDateToLocalDate(new Date(originalDate));
+          }
       }
   }
 
@@ -157,7 +161,7 @@ export class PredictorPage {
                 id : m.predictionId,
                 hGoals: m.hGoals,
                 aGoals: m.aGoals,
-                userId: parseInt(userId),
+                userId: userId,
                 matchId: m.id
             }));
 

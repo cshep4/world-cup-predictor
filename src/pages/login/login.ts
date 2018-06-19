@@ -5,8 +5,8 @@ import {TabsPage} from '../tabs/tabs';
 import {RegisterPage} from '../register/register';
 import Utils from "../../utils/utils";
 import {AdMobFree} from "@ionic-native/admob-free";
-import {Storage} from "@ionic/storage";
 import {ResetPasswordPage} from "../resetpassword/resetpassword";
+import {StorageUtils} from "../../utils/storage-utils";
 
 @Component({
   selector: 'page-login',
@@ -24,7 +24,7 @@ export class LoginPage {
               private toastCtrl: ToastController,
               private admob: AdMobFree,
               private plt: Platform,
-              private storage: Storage) {
+              private storage: StorageUtils) {
     Utils.showBanner(this.plt, this.admob);
   }
 

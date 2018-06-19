@@ -19,7 +19,6 @@ export class MatchService {
       const url = apiUrl + 'fixtures/predicted/' + id;
 
       this.http.get(url, options).subscribe(res => {
-          this.authService.setUsedToken(token).then((result) => {}, (err) => {});
           resolve(res);
         }, (err) => {
           reject(err);
@@ -38,11 +37,27 @@ export class MatchService {
       const url = apiUrl + 'predictions/update';
 
       this.http.post(url, JSON.stringify(predictions), options).subscribe(res => {
-          this.authService.setUsedToken(token).then((result) => {}, (err) => {});
           resolve(res);
         }, (err) => {
           reject(err);
         });
+    });
+  }
+
+  retrievePredictionSummary(token, id) {
+    return new Promise((resolve, reject) => {
+      const headers = new HttpHeaders()
+        .set("Content-Type", 'application/json')
+        .set("X-Auth-Token", token);
+      const options: RequestOptions = { headers: headers, observe: "response" };
+
+      const url = apiUrl + 'predictions/summary/' + id;
+
+      this.http.get(url, options).subscribe(res => {
+        resolve(res);
+      }, (err) => {
+        reject(err);
+      });
     });
   }
 }

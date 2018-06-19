@@ -5,7 +5,7 @@ import {TabsPage} from "../tabs/tabs";
 import Utils from "../../utils/utils";
 import {AdMobFree} from "@ionic-native/admob-free";
 import UserUtils from "../../utils/user-utils";
-import {Storage} from "@ionic/storage";
+import {StorageUtils} from "../../utils/storage-utils";
 
 @Component({
     selector: 'page-register',
@@ -27,7 +27,7 @@ export class RegisterPage {
                 private toastCtrl: ToastController,
                 private admob: AdMobFree,
                 private plt: Platform,
-                private storage: Storage) {
+                private storage: StorageUtils) {
       Utils.showBanner(this.plt, this.admob);
     }
 
