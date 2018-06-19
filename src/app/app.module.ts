@@ -31,6 +31,7 @@ import {NativeStorage} from "@ionic-native/native-storage";
 import {StorageUtils} from "../utils/storage-utils";
 import {PredictionSummaryPage} from "../pages/predictionsummary/prediction-summary";
 import {PredictionsAccordion} from "../components/predictions-accordion/predictions-accordion";
+import {ResultsPage} from "../pages/results/results";
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import {PredictionsAccordion} from "../components/predictions-accordion/predicti
     ResetPasswordPage,
     LeaguePage,
     PredictionSummaryPage,
-    PredictionsAccordion
+    PredictionsAccordion,
+    ResultsPage
   ],
   imports: [
     IonicModule.forRoot(MyApp, {
@@ -75,7 +77,8 @@ import {PredictionsAccordion} from "../components/predictions-accordion/predicti
     GroupPopover,
     ResetPasswordPage,
     LeaguePage,
-    PredictionSummaryPage
+    PredictionSummaryPage,
+    ResultsPage
   ],
   providers: [
     {provide: ErrorHandler, useClass: IonicErrorHandler},

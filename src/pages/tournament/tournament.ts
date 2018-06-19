@@ -35,8 +35,8 @@ export class TournamentPage {
       standings: null
     }];
 
-    this.currentTables = JSON.parse(JSON.stringify(standings));
     this.predictedTables = JSON.parse(JSON.stringify(standings));
+    this.currentTables = JSON.parse(JSON.stringify(standings));
 
     Utils.showBanner(this.plt, this.admob);
   }

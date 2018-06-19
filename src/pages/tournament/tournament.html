@@ -23,11 +23,11 @@
   </ion-refresher>
   <div [ngSwitch]="standingsType">
     <ion-list *ngSwitchCase="'current'">
-      <standings-accordion [tables]="currentTables"></standings-accordion>
+      <standings-accordion [tables]="currentTables" [isReal]=true></standings-accordion>
     </ion-list>
 
     <ion-list *ngSwitchCase="'predicted'">
-      <standings-accordion [tables]="predictedTables"></standings-accordion>
+      <standings-accordion [tables]="predictedTables" [isReal]=false></standings-accordion>
     </ion-list>
   </div>
 

@@ -74,6 +74,11 @@
             </ion-col>
 
           </ion-row>
+
+          <button *ngIf="isReal" ion-button block clear small icon-end (click)="openResults(child.group)">
+            Results
+            <ion-icon name="arrow-forward"></ion-icon>
+          </button>
         </ion-list>
 
         <!-- GROUP - END -->
@@ -94,7 +99,7 @@
                 </ion-col>
               </ion-row>
               <ion-row  text-center class="v-center">
-                <ion-col col-3 class="h-center home-team">
+                <ion-col col-3 class="h-center team">
                   <img *ngIf="item.hteam" src="assets/img/{{item.hteam}}.png" class="flag" align="top">
                   {{ item.hteam  || "TBC" }}
                 </ion-col>
@@ -107,7 +112,7 @@
                 <ion-col class="h-center" col-2>
                   <span *ngIf='item.agoals !== null'  > {{ item.agoals }}</span>
                 </ion-col>
-                <ion-col col-3 class="h-center away-team">
+                <ion-col col-3 class="h-center team">
                   <img *ngIf="item.ateam" src="assets/img/{{item.ateam}}.png" class="flag" align="top">
                   {{ item.ateam  || "TBC" }}
                 </ion-col>

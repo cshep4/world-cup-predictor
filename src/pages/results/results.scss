@@ -1,0 +1,32 @@
+page-results {
+  .v-center {
+    display: flex;
+    align-content: center;
+    align-items: center;
+  }
+
+  .h-center {
+    text-align: center;
+    font-size: 3vw;
+  }
+
+  .team {
+    color: color($colors, russia-red);
+    font-size: 3vw;
+  }
+
+  .match {
+    text-transform: none;
+    overflow-wrap: normal;
+    word-wrap: normal;
+    word-break: normal;
+    white-space: normal;
+  }
+
+  .flag {
+    max-width: 75%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

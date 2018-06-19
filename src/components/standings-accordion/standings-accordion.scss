@@ -1,25 +1,4 @@
 standings-accordion {
-  .v-center {
-    display: flex;
-    align-content: center;
-    align-items: center;
-  }
-
-  .h-center {
-    text-align: center;
-    font-size: 3vw;
-  }
-
-  .home-team {
-    color: color($colors, russia-red);
-    font-size: 3vw;
-  }
-
-  .away-team {
-    color: color($colors, russia-red);
-    font-size: 3vw;
-  }
-
   .accordion-list {
     background: color($colors, light);
     height: 100%;
@@ -52,6 +31,22 @@ standings-accordion {
 
   .dashed-bottom {
     border-bottom: 4px dashed;
+  }
+
+  .v-center {
+    display: flex;
+    align-content: center;
+    align-items: center;
+  }
+
+  .h-center {
+    text-align: center;
+    font-size: 3vw;
+  }
+
+  .team {
+    color: color($colors, russia-red);
+    font-size: 3vw;
   }
 
   .match {
