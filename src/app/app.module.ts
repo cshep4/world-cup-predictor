@@ -32,6 +32,8 @@ import {StorageUtils} from "../utils/storage-utils";
 import {PredictionSummaryPage} from "../pages/predictionsummary/prediction-summary";
 import {PredictionsAccordion} from "../components/predictions-accordion/predictions-accordion";
 import {ResultsPage} from "../pages/results/results";
+import {Rules} from "../components/rules/rules";
+import {Scoring} from "../components/scoring/scoring";
 
 @NgModule({
   declarations: [
@@ -51,7 +53,9 @@ import {ResultsPage} from "../pages/results/results";
     LeaguePage,
     PredictionSummaryPage,
     PredictionsAccordion,
-    ResultsPage
+    ResultsPage,
+    Rules,
+    Scoring
   ],
   imports: [
     IonicModule.forRoot(MyApp, {
@@ -93,6 +97,7 @@ import {ResultsPage} from "../pages/results/results";
     Keyboard,
     WheelSelector,
     NativeStorage,
-    StorageUtils]
+    StorageUtils
+  ]
 })
 export class AppModule {}

@@ -14,128 +14,101 @@
       </button>
     </ion-buttons>
   </ion-navbar>
-  <ion-toolbar>
-    <ion-segment [(ngModel)]="displayType">
-      <ion-segment-button value="scoring">
-        Scoring
-      </ion-segment-button>
-      <ion-segment-button value="rules">
-        Rules
-      </ion-segment-button>
-    </ion-segment>
-  </ion-toolbar>
 </ion-header>
 
-<ion-content padding class="text">
-  <ion-refresher (ionRefresh)="loadScoreAndRank($event)">
+<ion-content class="text">
+  <ion-refresher (ionRefresh)="loadData($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
+  <div padding><h2 class="title-font">World Cup 2018 Predictor</h2></div>
+  <ion-list>
+    <ion-list class="accordion-list">
+      <!-- RULES -->
+      <ion-list-header no-lines no-padding>
+        <!-- Toggle Button -->
+        <button ion-item (click)="toggleSection(rulesDropdown)" detail-none [ngClass]="{'section-active': rulesDropdown.open, 'section': !rulesDropdown.open}">
+          <ion-icon item-left name="arrow-forward" *ngIf="!rulesDropdown.open"></ion-icon>
+          <ion-icon item-left name="arrow-down" *ngIf="rulesDropdown.open"></ion-icon>
+          Rules
+        </button>
 
-  <div [ngSwitch]="displayType">
-    <ion-list *ngSwitchCase="'rules'">
-      <h2 class="title-font">WC 2018 Predictor</h2>
-      <h4 class="subtitle subtitle-font">Rules:</h4>
-      <ion-list class="grid">
-        <ion-row>
-          <ion-col col-2 align-self-center>
-            <img src="assets/img/bullet.png" class="center">
-          </ion-col>
-          <ion-col col-10>
-            Predictions for each match can be added/updated any time before the match kicks off.
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col col-2 align-self-center>
-            <img src="assets/img/bullet.png" class="center">
-          </ion-col>
-          <ion-col col-10>
-            As the tournament progresses, the knockout matches will be populated with the correct teams, these predictions can also be made at any time up until each match kicks off.
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col col-2 align-self-center>
-            <img src="assets/img/bullet.png" class="center">
-          </ion-col>
-          <ion-col col-10>
-            Predictions can be changed as often as you wish. Once a match kicks off, the prediction for that game will be locked in and cannot be changed.
-          </ion-col>
-        </ion-row>
-      </ion-list>
-    </ion-list>
+        <ion-list *ngIf="rulesDropdown.open" no-lines padding>
+          <rules class="remove-header-styling"></rules>
+        </ion-list>
+      </ion-list-header>
 
-    <ion-list *ngSwitchCase="'scoring'">
-      <h2 class="title-font">WC 2018 Predictor</h2>
-      <h4 class="subtitle subtitle-font">Scoring:</h4>
-      <b class="subtitle-font">Group Stage</b>
-      <ion-list class="grid">
-        <ion-row>
-          <ion-col col-2 align-self-center>
-            1 Pt.
-          </ion-col>
-          <ion-col col-10>
-            Correct amount of goals for a team. (e.g. prediction of 2-1, final score is 2-3, 1 point will be awarded. Prediction of 3-1, final score is 2-2, 0 points will be awarded.)
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col col-2 align-self-center>
-            3 Pts.
-          </ion-col>
-          <ion-col col-10>
-            Correct result, plus points for correct amount of goals (if any). (e.g. prediction of 2-1, final score is 3-2, 3 points will be awarded for predicting the correct team to win.)
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col col-2 align-self-center>
-            3 Pts.
-          </ion-col>
-          <ion-col col-10>
-            Correct scoreline, plus points for a correct result and goals. (e.g. prediction of 2-1, final score is 2-1, 8 points will be awarded - 3 for correct scoreline, 3 for correct result, 1 for each team's correct amount of goals)
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col col-2 align-self-center>
-            5 Pts.
-          </ion-col>
-          <ion-col col-10>
-            Correct team position in a group.
-          </ion-col>
-        </ion-row>
-      </ion-list>
-      <b class="subtitle-font">Knockout Stage</b>
-      <ion-list class="grid">
-        <ion-row>
-          <ion-col col-2 align-self-center>
-            1 Pt.
-          </ion-col>
-          <ion-col col-10>
-            Correct amount of goals for a team, see above.
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col col-2 align-self-center>
-            3 Pts.
-          </ion-col>
-          <ion-col col-10>
-            Correct result, plus points for correct amount of goals (if any), see above.
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col col-2 align-self-center>
-            3 Pts.
-          </ion-col>
-          <ion-col col-10>
-            Correct scoreline, plus points for a correct result and goals, see above.
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col col-2 align-self-center>
-            20 Pts.
-          </ion-col>
-          <ion-col col-10>
-            Correct prediction of the winner.
-          </ion-col>
-        </ion-row>
-      </ion-list>
+      <!-- SCORING -->
+      <ion-list-header no-lines no-padding>
+        <!-- Toggle Button -->
+        <button ion-item (click)="toggleSection(scoringDropdown)" detail-none [ngClass]="{'section-active': scoringDropdown.open, 'section': !scoringDropdown.open}">
+          <ion-icon item-left name="arrow-forward" *ngIf="!scoringDropdown.open"></ion-icon>
+          <ion-icon item-left name="arrow-down" *ngIf="scoringDropdown.open"></ion-icon>
+          Scoring
+        </button>
+
+        <ion-list *ngIf="scoringDropdown.open" no-lines padding>
+          <scoring class="remove-header-styling"></scoring>
+        </ion-list>
+      </ion-list-header>
     </ion-list>
-  </div>
+  </ion-list>
+
+  <ion-card (tap)="goToPredictorPage()">
+    <ion-card-header>
+      Upcoming Matches
+    </ion-card-header>
+
+    <ion-card-content *ngIf="matchesRetrievable && upcomingMatches && upcomingMatches.length > 0" no-padding>
+      <ion-scroll scrollY="true" no-padding>
+        <ion-item-group *ngFor="let item of upcomingMatches" align-self-center no-padding>
+          <ion-item-divider color="light" class="h-center">
+            {{item.date | date : "EEE, d MMMM yyyy" }}
+          </ion-item-divider>
+          <ion-item *ngFor="let match of item.matches">
+            <ion-row class="v-center">
+              <ion-col col-3 class="h-center">
+                {{ match.hteam  || "TBC" }}
+              </ion-col>
+              <ion-col col-2>
+                <img *ngIf="match.hteam" src="assets/img/{{match.hteam}}.png" class="flag" align="top">
+              </ion-col>
+              <ion-col col-2 class="h-center">
+                {{match.dateTime | date : "ha" }}
+              </ion-col>
+              <ion-col col-2>
+                <img *ngIf="match.ateam" src="assets/img/{{match.ateam}}.png" class="flag" align="top">
+              </ion-col>
+              <ion-col col-3 class="h-center">
+                {{ match.ateam  || "TBC" }}
+              </ion-col>
+            </ion-row>
+          </ion-item>
+        </ion-item-group>
+      </ion-scroll>
+    </ion-card-content>
+
+    <ion-card-content *ngIf="matchesRetrievable && !upcomingMatches" class="card-size">
+      <ion-row class="v-center full-height">
+        <ion-col col-12 class="h-center">
+          <ion-spinner></ion-spinner>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+
+    <ion-card-content *ngIf="matchesRetrievable && upcomingMatches && upcomingMatches.length == 0" class="card-size">
+      <ion-row class="v-center full-height">
+        <ion-col col-12 class="h-center">
+          No upcoming matches
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+
+    <ion-card-content *ngIf="!matchesRetrievable" class="card-size">
+      <ion-row class="v-center full-height">
+        <ion-col col-12 class="h-center">
+          Error loading matches, please try again
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

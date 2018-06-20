@@ -1,0 +1,27 @@
+rules {
+  .subtitle {
+    font-size: 5vw;
+  }
+
+  .subtitle-font {
+    margin: 0;
+    font-family: OpenSans-Bold-complete, serif;
+  }
+
+  .grid {
+    margin: 0;
+    padding: 0;
+  }
+
+  .text {
+    font-size: 3vw;
+  }
+
+  .remove-styling {
+    text-transform: none;
+    overflow-wrap: normal;
+    word-wrap: normal;
+    word-break: normal;
+    white-space: normal;
+  }
+}

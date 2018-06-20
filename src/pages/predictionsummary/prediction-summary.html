@@ -14,5 +14,7 @@
   <ion-refresher (ionRefresh)="getPredictionSummary($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <predictions-accordion [predictions]="predictions"></predictions-accordion>
+  <ion-list>
+    <predictions-accordion [predictions]="predictions"></predictions-accordion>
+  </ion-list>
 </ion-content>

@@ -4,24 +4,6 @@ page-home {
     font-size: 7vw;
   }
 
-  .subtitle {
-    font-size: 5vw;
-  }
-
-  .subtitle-font {
-    margin: 0;
-    font-family: OpenSans-Bold-complete, serif;
-  }
-
-  .grid {
-    margin: 0;
-    padding: 0;
-  }
-
-  .text {
-    font-size: 3vw;
-  }
-
   .white-spinner {
     ion-spinner svg * {
       stroke: white !important;
@@ -34,5 +16,75 @@ page-home {
     margin-right: auto;
     height: 70%;
     width: 70%;
+  }
+
+
+  .remove-header-styling {
+    text-transform: none;
+    overflow-wrap: normal;
+    word-wrap: normal;
+    word-break: normal;
+    white-space: normal;
+  }
+
+
+  .accordion-list {
+    background: color($colors, light);
+    height: 100%;
+  }
+  .section {
+    background: #fff;
+    color: #000;
+    margin-bottom: 4px;
+  }
+  .section-active {
+    background: color($colors, russia-red);
+    color: #fff;
+  }
+
+  .child {
+    background: #e8e7e6;
+    color: #000;
+    margin-bottom: 4px;
+  }
+  .child-item {
+    background: #f3f2f1;
+    padding: 10px;
+  }
+  .label {
+    margin: 0px;
+  }
+  .list {
+    margin-bottom: 4px;
+  }
+
+  .dashed-bottom {
+    border-bottom: 4px dashed;
+  }
+
+  ion-scroll { height: 90vw; }
+
+  .card-size { height: 90vw; }
+
+  .flag {
+    max-width: 100%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .v-center {
+    display: flex;
+    align-content: center;
+    align-items: center;
+  }
+
+  .h-center {
+    text-align: center;
+    font-size: 3vw;
+  }
+
+  .full-height {
+    height: 100%;
   }
 }
