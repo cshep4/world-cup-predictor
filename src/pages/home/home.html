@@ -20,7 +20,9 @@
   <ion-refresher (ionRefresh)="loadData($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
+
   <div padding><h2 class="title-font">World Cup 2018 Predictor</h2></div>
+
   <ion-list>
     <ion-list class="accordion-list">
       <!-- RULES -->
@@ -53,18 +55,18 @@
     </ion-list>
   </ion-list>
 
-  <ion-card (tap)="goToPredictorPage()">
-    <ion-card-header>
+  <ion-card>
+    <ion-card-header (tap)="goToPredictorPage()">
       Upcoming Matches
     </ion-card-header>
 
     <ion-card-content *ngIf="matchesRetrievable && upcomingMatches && upcomingMatches.length > 0" no-padding>
-      <ion-scroll scrollY="true" no-padding>
+      <ion-scroll scrollY="true" no-padding scrollCatcher>
         <ion-item-group *ngFor="let item of upcomingMatches" align-self-center no-padding>
           <ion-item-divider color="light" class="h-center">
             {{item.date | date : "EEE, d MMMM yyyy" }}
           </ion-item-divider>
-          <ion-item *ngFor="let match of item.matches">
+          <ion-item *ngFor="let match of item.matches" (tap)="goToPredictorPage()">
             <ion-row class="v-center">
               <ion-col col-3 class="h-center">
                 {{ match.hteam  || "TBC" }}

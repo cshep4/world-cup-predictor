@@ -34,6 +34,7 @@ import {PredictionsAccordion} from "../components/predictions-accordion/predicti
 import {ResultsPage} from "../pages/results/results";
 import {Rules} from "../components/rules/rules";
 import {Scoring} from "../components/scoring/scoring";
+import {ScrollCatcherDirective} from "../directive/scroll-catcher-directive";
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import {Scoring} from "../components/scoring/scoring";
     PredictionsAccordion,
     ResultsPage,
     Rules,
-    Scoring
+    Scoring,
+    ScrollCatcherDirective
   ],
   imports: [
     IonicModule.forRoot(MyApp, {
