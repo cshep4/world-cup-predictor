@@ -15,6 +15,18 @@ page-predictor {
     font-size: 3vw;
   }
 
+  @media screen and (min-width: 467px) {
+    .h-center {
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .team {
+      color: color($colors, russia-red);
+      font-size: 14px;
+    }
+  }
+
   .score-input {
     max-width: 100%;
   }
@@ -24,6 +36,15 @@ page-predictor {
     display: block;
     margin-left: auto;
     margin-right: auto;
+  }
+
+  @media screen and (min-width: 467px) {
+    .flag {
+      max-width: 90px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
   }
 
   .my-overlay {

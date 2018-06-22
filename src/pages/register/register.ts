@@ -40,14 +40,14 @@ export class RegisterPage {
                 password: this.regData.password
             };
 
-            this.authService.login(loginData).then((result) => {
+            this.authService.login(loginData).then(async (result) => {
                 this.loading.dismiss();
 
                 this.data = result;
                 const token = this.data.headers.get('X-Auth-Token');
-                this.storage.set('token', token);
+                await this.storage.set('token', token);
                 const userId = this.data.headers.get('userId');
-                this.storage.set('userId', userId);
+                await this.storage.set('userId', userId);
 
                 this.navCtrl.setRoot(TabsPage);
                 this.navCtrl.popToRoot();

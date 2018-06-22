@@ -16,12 +16,12 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content class="text">
+<ion-content>
   <ion-refresher (ionRefresh)="loadData($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <div padding><h2 class="title-font">World Cup 2018 Predictor</h2></div>
+  <div padding><h2 class="title-font">WC 2018 Predictor</h2></div>
 
   <ion-list>
     <ion-list class="accordion-list">
@@ -56,17 +56,21 @@
   </ion-list>
 
   <ion-card>
-    <ion-card-header (tap)="goToPredictorPage()">
+    <ion-card-header class="header-colour" (tap)="goToPredictorPage()">
       Upcoming Matches
     </ion-card-header>
 
     <ion-card-content *ngIf="matchesRetrievable && upcomingMatches && upcomingMatches.length > 0" no-padding>
       <ion-scroll scrollY="true" no-padding scrollCatcher>
-        <ion-item-group *ngFor="let item of upcomingMatches" align-self-center no-padding>
-          <ion-item-divider color="light" class="h-center">
+        <ion-item-group *ngFor="let item of upcomingMatches; let f=first;"
+                        align-self-center
+                        no-padding>
+          <ion-item-divider color="light"
+                            class="h-center border-line"
+                            [ngStyle]="{'border-top': f ? '1px solid #dedede' : 'none'}">
             {{item.date | date : "EEE, d MMMM yyyy" }}
           </ion-item-divider>
-          <ion-item *ngFor="let match of item.matches" (tap)="goToPredictorPage()">
+          <ion-item *ngFor="let match of item.matches" (tap)="goToPredictorPage(match)" class="border-line">
             <ion-row class="v-center">
               <ion-col col-3 class="h-center">
                 {{ match.hteam  || "TBC" }}
@@ -109,6 +113,37 @@
       <ion-row class="v-center full-height">
         <ion-col col-12 class="h-center">
           Error loading matches, please try again
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header class="header-colour" (tap)="goToStandingsPage()">
+      Leagues
+    </ion-card-header>
+
+    <ion-list no-lines *ngIf="leaguesRetrievable && leagues">
+      <button ion-item *ngFor="let league of leagues" (click)="openLeague(league)" class="border-bottom-none">
+        {{league.leagueName}}
+        <ion-note item-end>
+          {{league.rank}}
+        </ion-note>
+      </button>
+    </ion-list>
+
+    <ion-card-content *ngIf="leaguesRetrievable && !leagues">
+      <ion-row class="v-center full-height">
+        <ion-col col-12 class="h-center">
+          <ion-spinner></ion-spinner>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+
+    <ion-card-content *ngIf="!leaguesRetrievable">
+      <ion-row class="v-center full-height">
+        <ion-col col-12 class="h-center">
+          Error loading leagues, please try again
         </ion-col>
       </ion-row>
     </ion-card-content>

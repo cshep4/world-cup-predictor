@@ -8,6 +8,7 @@ import {UserLeagueOverview} from "../../models/UserLeagueOverview";
 import {OverallLeagueOverview} from "../../models/OverallLeagueOverview";
 import {LeaguePage} from "../league/league";
 import {StorageUtils} from "../../utils/storage-utils";
+import {DataProvider} from "../../providers/data-provider";
 
 @Component({
   selector: 'page-standings',
@@ -26,13 +27,20 @@ export class StandingsPage {
               private admob: AdMobFree,
               private plt: Platform,
               private alertCtrl: AlertController,
-              private storage: StorageUtils) {
+              private storage: StorageUtils,
+              private dataProvider: DataProvider) {
     Utils.showBanner(this.plt, this.admob);
   }
 
   ionViewDidEnter() {
     if (!this.leagues || Utils.refreshLeagues) {
       this.loadsUserLeagues();
+    }
+
+    if (this.dataProvider.league) {
+      const league = this.dataProvider.league;
+      this.dataProvider.league = null;
+      this.navCtrl.push(LeaguePage, { 'league': league });
     }
   }
 

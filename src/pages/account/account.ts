@@ -8,6 +8,7 @@ import {AdMobFree} from "@ionic-native/admob-free";
 import UserUtils from "../../utils/user-utils";
 import {AccountService} from "../../providers/account-service";
 import {StorageUtils} from "../../utils/storage-utils";
+import {LocalNotifications} from "@ionic-native/local-notifications";
 
 @Component({
   selector: 'page-account',
@@ -23,6 +24,7 @@ export class AccountPage {
   doesPasswordContainLowercaseLetters = UserUtils.doesPasswordContainLowercaseLetters;
   doesPasswordContainNumbers = UserUtils.doesPasswordContainNumbers;
   doPasswordsMatch = UserUtils.doPasswordsMatch;
+  isNotifications: boolean;
 
   constructor(private app: App,
               private authService: AuthService,
@@ -31,9 +33,14 @@ export class AccountPage {
               private toastCtrl: ToastController,
               private admob: AdMobFree,
               private plt: Platform,
-              private storage: StorageUtils) {
+              private storage: StorageUtils,
+              private localNotifications: LocalNotifications) {
     this.loadAccountDetails();
     Utils.showBanner(this.plt, this.admob);
+
+    this.storage.get("notify").then((isNotified) => {
+      this.isNotifications = isNotified === "true";
+    });
   }
 
   loadAccountDetails() {
@@ -134,5 +141,14 @@ export class AccountPage {
       this.loading.dismiss();
       Utils.presentToast("Error updating password", this.toastCtrl);
     });
+  }
+
+  private setNotified() {
+    if (this.isNotifications === true) {
+      this.storage.set("notify", "true");
+    } else {
+      this.storage.set("notify", "false");
+      this.localNotifications.cancelAll();
+    }
   }
 }

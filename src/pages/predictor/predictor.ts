@@ -10,6 +10,7 @@ import {Match} from "../../models/Match";
 import {AdMobFree} from "@ionic-native/admob-free";
 import {WheelSelector} from "@ionic-native/wheel-selector";
 import {StorageUtils} from "../../utils/storage-utils";
+import {DataProvider} from "../../providers/data-provider";
 
 @Component({
   selector: 'page-predictor',
@@ -31,7 +32,8 @@ export class PredictorPage {
               private admob: AdMobFree,
               private plt: Platform,
               private selector: WheelSelector,
-              private storage: StorageUtils) {
+              private storage: StorageUtils,
+              private dataProvider: DataProvider) {
     Utils.showBanner(this.plt, this.admob);
     if (!this.matches) {
       this.loadMatchesWithPredictions();
@@ -39,6 +41,13 @@ export class PredictorPage {
   }
 
   ionViewDidEnter() {
+    if (this.dataProvider.predictionGroup) {
+      const phase = this.dataProvider.predictionGroup;
+      this.dataProvider.predictionGroup = null;
+
+      this.phase = phase;
+      this.filterargs = {phase: phase};
+    }
     this.selector.hideSelector();
   }
 

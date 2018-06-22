@@ -35,6 +35,8 @@ import {ResultsPage} from "../pages/results/results";
 import {Rules} from "../components/rules/rules";
 import {Scoring} from "../components/scoring/scoring";
 import {ScrollCatcherDirective} from "../directive/scroll-catcher-directive";
+import {LocalNotifications} from '@ionic-native/local-notifications';
+import {DataProvider} from "../providers/data-provider";
 
 @NgModule({
   declarations: [
@@ -99,7 +101,9 @@ import {ScrollCatcherDirective} from "../directive/scroll-catcher-directive";
     Keyboard,
     WheelSelector,
     NativeStorage,
-    StorageUtils
+    StorageUtils,
+    LocalNotifications,
+    DataProvider
   ]
 })
 export class AppModule {}

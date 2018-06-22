@@ -30,14 +30,14 @@ export class LoginPage {
 
   doLogin() {
       this.loading = Utils.showLoader('Logging in...', this.loadingCtrl);
-      this.authService.login(this.loginData).then((result) => {
+      this.authService.login(this.loginData).then(async (result) => {
           this.loading.dismiss();
 
           this.data = result;
           const token = this.data.headers.get('X-Auth-Token');
-          this.storage.set('token', token);
+          await this.storage.set('token', token);
           const userId = this.data.headers.get('userId');
-          this.storage.set('userId', userId);
+          await this.storage.set('userId', userId);
 
           this.navCtrl.insert(0,TabsPage);
           this.navCtrl.popToRoot();

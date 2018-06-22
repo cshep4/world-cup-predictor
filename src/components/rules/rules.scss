@@ -24,4 +24,10 @@ rules {
     word-break: normal;
     white-space: normal;
   }
+
+  @media screen and (min-width: 467px) {
+    .img-size {
+      max-width: 70px;
+    }
+  }
 }

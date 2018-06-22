@@ -13,6 +13,10 @@
 
 <ion-content padding>
   <ion-item>
+    <ion-label>Match Reminder Notifications</ion-label>
+    <ion-toggle [(ngModel)]="isNotifications" (ionChange)="setNotified()"></ion-toggle>
+  </ion-item>
+  <ion-item>
     <ion-label stacked>First Name</ion-label>
     <ion-input [(ngModel)]="accountData.firstName" name="firstName" type="text" placeholder="Your first name" ></ion-input>
   </ion-item>
