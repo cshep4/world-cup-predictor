@@ -8,7 +8,7 @@ World cup 2018 predictor app, designed for users to correctly predict all the sc
 
 - This is built using the Ionic framework, with back-end APIs written in Kotlin using Spring Boot.
 - The back-end is fully unit tested using TDD and is currently being hosted on Heroku.
-- The database used to store all the data is using PostgresSQL
+- The database used to store all the data is using PostgreSQL
 - A scheduled AWS Lambda function is also used to automatically call an API to update match results, as well as user scores.
 - Match result data is retrieved from an external API, then used to compare against each user's predictions to assign points.
 
